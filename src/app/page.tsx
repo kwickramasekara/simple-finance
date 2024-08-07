@@ -1,5 +1,10 @@
-import SignIn from "./(auth)/sign-in";
+import { getLoggedInUser } from "@/lib/server/appwrite";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return <SignIn></SignIn>;
+export default async function Home() {
+  const user = await getLoggedInUser();
+
+  if (!user) redirect("/sign-in");
+
+  redirect("/dashboard");
 }

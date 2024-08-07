@@ -1,9 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Logo from "@/components/logo";
+import Logo from "@/components/shared/logo";
 
 export default function SignIn() {
   return (
@@ -20,7 +19,7 @@ export default function SignIn() {
         </div>
       </div>
       <div className="flex items-center justify-center py-12">
-        <div className="mx-auto px-2 grid gap-10">
+        <div className="mx-auto px-2 grid gap-10 min-w-[360px]">
           <div className="grid gap-2">
             <h2 className="text-4xl font-semibold">Sign In</h2>
             <p className="text-sm text-muted-foreground">
@@ -50,7 +49,7 @@ export default function SignIn() {
           <div className="grid gap-4 text-sm text-muted-foreground">
             <p>
               Don&apos;t have an account?{" "}
-              <Link href="#" className="underline">
+              <Link href="/sign-up" className="underline">
                 Sign up
               </Link>
             </p>

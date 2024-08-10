@@ -1,4 +1,4 @@
-import { getLoggedInUser } from "@/lib/appwrite";
+import { getSignedInUser } from "@/lib/appwrite";
 import { redirect } from "next/navigation";
 import Hero from "@/components/auth/hero";
 
@@ -7,7 +7,7 @@ export default async function AuthLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getLoggedInUser();
+  const user = await getSignedInUser();
 
   if (user) redirect("/dashboard");
 

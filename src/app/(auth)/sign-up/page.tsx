@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { OctagonAlert } from "lucide-react";
 import { useFormState, useFormStatus } from "react-dom";
-import Hero from "@/components/auth/hero";
 import Submit from "@/components/forms/submit";
 
 export default function SignUp() {

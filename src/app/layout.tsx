@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased max-w-[2048px] mx-auto border-x",
+          "min-h-screen bg-background font-sans antialiased max-w-screen-xl mx-auto border-x",
           `${GeistSans.variable} ${GeistMono.variable}`
         )}
       >

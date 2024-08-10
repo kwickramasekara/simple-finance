@@ -1,8 +1,11 @@
+import { cn } from "@/lib/utils";
+
 interface LogoProps {
-  size: "lg" | "md" | "sm";
+  size?: "lg" | "md" | "sm";
+  align?: "center";
 }
 
-export default function Logo({ size }: LogoProps) {
+export default function Logo({ size = "sm", align }: LogoProps) {
   let containerSizeMap = {
     lg: "w-[72px] h-[72px]",
     md: "w-[48px] h-[48px]",
@@ -17,10 +20,18 @@ export default function Logo({ size }: LogoProps) {
 
   return (
     <div
-      className={`inline-flex ${containerSizeMap[size]} border-[1px] rounded-lg justify-center items-center mx-auto bg-stone-900`}
+      className={cn(
+        "inline-flex border-[1px] justify-center items-center bg-stone-900",
+        size === "sm" ? "rounded-md" : "rounded-lg",
+        align === "center" && "mx-auto",
+        containerSizeMap[size]
+      )}
     >
       <span
-        className={`${fontSizeMap[size]} font-semibold  font-mono tracking-tighter`}
+        className={cn(
+          "font-semibold font-mono tracking-tighter",
+          fontSizeMap[size]
+        )}
       >
         $∫
       </span>

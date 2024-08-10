@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ID } from "node-appwrite";
-import { createAdminClient } from "@/lib/appwrite";
+import { createAdminClient, createSessionClient } from "@/lib/appwrite";
 
 export async function signUpAction(prevState: any, formData: FormData) {
   const email = formData.get("email");
@@ -64,4 +64,18 @@ export async function signInAction(prevState: any, formData: FormData) {
   }
 
   redirect("/dashboard");
+}
+
+export async function signOutAction() {
+  try {
+    const { account } = await createSessionClient();
+
+    cookies().delete("sf-user-session");
+
+    const response = await account.deleteSession("current");
+
+    return response;
+  } catch (error) {
+    return null;
+  }
 }

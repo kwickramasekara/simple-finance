@@ -36,7 +36,7 @@ export async function createAdminClient() {
   };
 }
 
-export async function getLoggedInUser() {
+export async function getSignedInUser() {
   try {
     const { account } = await createSessionClient();
     return await account.get();

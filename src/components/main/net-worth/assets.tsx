@@ -6,7 +6,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -31,19 +30,19 @@ const chartConfig = {
     label: "Visitors",
   },
   chrome: {
-    label: "Chrome",
+    label: "Cash",
     color: "hsl(var(--chart-1))",
   },
   safari: {
-    label: "Safari",
+    label: "Stock",
     color: "hsl(var(--chart-2))",
   },
   firefox: {
-    label: "Firefox",
+    label: "CD",
     color: "hsl(var(--chart-3))",
   },
   edge: {
-    label: "Edge",
+    label: "Retirement",
     color: "hsl(var(--chart-4))",
   },
   other: {
@@ -52,13 +51,13 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function Categories() {
+export default function Assets() {
   return (
     <Card className="flex flex-col">
       <CardHeader>
-        <CardTitle className="text-xl">Categories</CardTitle>
+        <CardTitle className="text-xl">Assets</CardTitle>
         <CardDescription className="!mt-0">
-          Asset split across the total net worth
+          Asset spread across the total net worth
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">

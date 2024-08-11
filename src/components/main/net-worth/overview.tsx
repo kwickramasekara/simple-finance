@@ -25,6 +25,11 @@ const chartData = [
   { month: "May", data: 531708 },
   { month: "June", data: 543962 },
   { month: "July", data: 556279 },
+  { month: "August", data: 570494 },
+  { month: "September", data: 568287 },
+  { month: "October", data: 582676 },
+  { month: "November", data: 580467 },
+  { month: "December", data: 594676 },
 ];
 
 const chartConfig = {

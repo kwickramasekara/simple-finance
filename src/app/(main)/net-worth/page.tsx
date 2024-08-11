@@ -1,6 +1,7 @@
-import Categories from "@/components/main/net-worth/categories";
+import Assets from "@/components/main/net-worth/assets";
 import MonthlyChange from "@/components/main/net-worth/monthly-change";
 import Overview from "@/components/main/net-worth/overview";
+import Details from "@/components/main/net-worth/details";
 import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
 import { LineChart } from "lucide-react";
@@ -19,10 +20,13 @@ export default function NetWorth() {
           Add
         </Button>
       </div>
-      <Overview />
-      <div className="py-12 grid grid-cols-1 md:grid-cols-2 gap-12">
-        <MonthlyChange />
-        <Categories />
+      <div className="flex flex-col gap-12">
+        <Overview />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <MonthlyChange />
+          <Assets />
+        </div>
+        <Details />
       </div>
     </main>
   );

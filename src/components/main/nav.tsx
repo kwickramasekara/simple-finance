@@ -142,8 +142,8 @@ export default function Nav({
   return (
     <>
       {/* Mobile nav  */}
-      <div className="w-screen lg:hidden bg-neutral-900">
-        <div className="flex justify-between py-6 px-12">
+      <div className="w-screen lg:hidden bg-neutral-950">
+        <div className="flex justify-between py-6 px-6 md:px-12">
           <div className="w-full inline-flex gap-2 items-center">
             <Logo size="sm" />
             <h1 className="text-xl font-semibold">Simple Finance</h1>
@@ -153,8 +153,8 @@ export default function Nav({
       </div>
 
       {/* Desktop nav  */}
-      <div className="hidden lg:flex flex-col min-w-72 border-r bg-neutral-900">
-        <div className="p-12 w-full inline-flex gap-2 items-center">
+      <div className="hidden lg:flex flex-col min-w-72 border-r bg-neutral-950">
+        <div className="px-12 pt-12 w-full inline-flex gap-2 items-center">
           <Logo size="sm" />
           <h1 className="text-xl font-semibold">Simple Finance</h1>
         </div>

@@ -12,10 +12,13 @@ export default async function AuthLayout({
   if (!user) redirect("/sign-in");
 
   return (
-    <div className="w-full h-screen flex flex-col lg:flex-row">
+    <div className="w-full h-full min-h-screen flex flex-col lg:flex-row">
       <Nav user={user} />
-      <div className="w-full h-full main-bg">
-        <div className="p-12 bg-black/80 w-full h-full">{children}</div>
+
+      <div className="w-full h-full min-h-screen main-bg">
+        <div className="p-6 md:p-12 bg-black/85 w-full h-full min-h-screen">
+          <div className="max-w-screen-lg mx-auto">{children}</div>
+        </div>
       </div>
     </div>
   );

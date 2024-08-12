@@ -13,53 +13,28 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { cn, formatCurrency, getMonth } from "@/lib/utils";
 
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
+const nameMap: { [key: string]: string } = {
+  cash: "Cash",
+  stocks: "Stocks",
+  cd: "CD",
+  other: "Other",
+  date: "Month",
+  "401k": "401K",
+  ira: "IRA",
+  hsa: "HSA",
+  crypto: "Crypto",
+  bonds: "Bonds",
+  vehicles: "Vehicles",
+  realEstate: "Real Estate",
+};
 
-export default function Details() {
+export default function Details({
+  data,
+}: {
+  data: NetWorthAssetsCollection[] | null;
+}) {
   return (
     <Card>
       <CardHeader>
@@ -69,28 +44,48 @@ export default function Details() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">Invoice</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Method</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {invoices.map((invoice) => (
-              <TableRow key={invoice.invoice}>
-                <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                <TableCell>{invoice.paymentStatus}</TableCell>
-                <TableCell>{invoice.paymentMethod}</TableCell>
-                <TableCell className="text-right">
-                  {invoice.totalAmount}
-                </TableCell>
+        {data && data.length > 0 ? (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                {Object.keys(data[0]).map((key, index) => (
+                  <TableHead
+                    key={key}
+                    className={cn(
+                      "font-medium capitalize",
+                      index > 0 && "text-right"
+                    )}
+                  >
+                    {nameMap[key]}
+                  </TableHead>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data.map((item) => (
+                <TableRow key={item["$id"]}>
+                  {Object.keys(item).map(
+                    (key, index) =>
+                      key !== "$id" && (
+                        <TableCell
+                          key={key}
+                          className={cn("font-mono", index > 0 && "text-right")}
+                        >
+                          {index === 0
+                            ? getMonth(item[key], true)
+                            : item[key] === null
+                            ? "-"
+                            : formatCurrency(item[key])}
+                        </TableCell>
+                      )
+                  )}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : (
+          <p className="text-destructive">No data</p>
+        )}
       </CardContent>
     </Card>
   );

@@ -5,8 +5,13 @@ import Details from "@/components/main/net-worth/details";
 import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
 import { LineChart } from "lucide-react";
+import { getNetWorthAssetsByYear } from "@/lib/actions/db";
+// import { revalidatePath } from "next/cache";
 
-export default function NetWorth() {
+export default async function NetWorth() {
+  const netWorthData = await getNetWorthAssetsByYear();
+
+  // revalidatePath("/net-worth");
   return (
     <main>
       <div className="flex justify-between items-center mb-12">
@@ -26,7 +31,7 @@ export default function NetWorth() {
           <MonthlyChange />
           <Assets />
         </div>
-        <Details />
+        <Details data={netWorthData} />
       </div>
     </main>
   );

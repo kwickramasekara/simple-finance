@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/chart";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp } from "lucide-react";
-import { getMonth } from "@/lib/utils";
+import { getMonthlyNetWorthTotals } from "@/lib/utils";
 
 export default function Overview({
   data,
@@ -30,18 +30,7 @@ export default function Overview({
     },
   } satisfies ChartConfig;
 
-  const chartData: Object[] = [];
-
-  data.forEach((item) => {
-    const month = getMonth(item.date);
-    let total = 0;
-
-    Object.values(item).forEach((value) => {
-      if (typeof value === "number") total += value;
-    });
-
-    chartData.push({ month, total });
-  });
+  const chartData = getMonthlyNetWorthTotals(data);
 
   return (
     <Card>

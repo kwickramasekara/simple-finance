@@ -1,7 +1,6 @@
 "use client";
 
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, XAxis } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -15,27 +14,28 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { month: "January", visitors: 186 },
-  { month: "February", visitors: 205 },
-  { month: "March", visitors: -207 },
-  { month: "April", visitors: 173 },
-  { month: "May", visitors: -209 },
-  { month: "June", visitors: 214 },
-  { month: "July", visitors: 186 },
-  { month: "August", visitors: 205 },
-  { month: "September", visitors: -207 },
-  { month: "October", visitors: 173 },
-  { month: "November", visitors: -209 },
-  { month: "December", visitors: 214 },
-];
+import { getMonthlyNetWorthTotals } from "@/lib/utils";
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
+  difference: {
+    label: "Difference",
   },
 } satisfies ChartConfig;
-export default function MonthlyChange() {
+export default function MonthlyChange({
+  data,
+}: {
+  data: NetWorthAssetsCollection[];
+}) {
+  const monthlyTotals = getMonthlyNetWorthTotals(data);
+  const chartData: { month: string; difference: number }[] = [];
+
+  monthlyTotals.forEach((item, index) => {
+    if (index === 0) return;
+    let difference = item.total - monthlyTotals[index - 1].total;
+    difference = Math.round(difference);
+    chartData.push({ month: item.month, difference });
+  });
+
   return (
     <Card>
       <CardHeader>
@@ -46,7 +46,13 @@ export default function MonthlyChange() {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart
+            accessibilityLayer
+            data={chartData}
+            margin={{
+              top: 12,
+            }}
+          >
             <defs>
               <linearGradient id="colorPositive" x1="0" y1="0" x2="0" y2="1">
                 <stop
@@ -84,10 +90,10 @@ export default function MonthlyChange() {
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <Bar dataKey="visitors" radius={5}>
+            <Bar dataKey="difference" radius={5}>
               <LabelList
                 position="top"
-                dataKey="visitors"
+                dataKey="difference"
                 fillOpacity={1}
                 fill="hsl(var(--primary))"
               />
@@ -95,7 +101,7 @@ export default function MonthlyChange() {
                 <Cell
                   key={item.month}
                   fill={
-                    item.visitors > 0
+                    item.difference > 0
                       ? "url(#colorPositive)"
                       : "url(#colorNegative)"
                   }

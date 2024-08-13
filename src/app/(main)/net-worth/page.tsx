@@ -11,7 +11,6 @@ import Alert from "@/components/common/alert";
 
 export default async function NetWorth() {
   const netWorthData = await getNetWorthAssetsByYear();
-  const netWorthDataLatest = netWorthData?.[netWorthData.length - 1];
 
   // revalidatePath("/net-worth");
   return (
@@ -27,9 +26,7 @@ export default async function NetWorth() {
           Add
         </Button>
       </div>
-      {netWorthData === null ||
-      netWorthData?.length === 0 ||
-      !netWorthDataLatest ? (
+      {netWorthData === null || netWorthData?.length === 0 ? (
         <Alert type="error" className="max-w-[360px] mx-auto">
           No data available.
         </Alert>
@@ -37,8 +34,8 @@ export default async function NetWorth() {
         <div className="flex flex-col gap-12">
           <Overview data={netWorthData} />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <MonthlyChange />
-            <Assets data={netWorthDataLatest} />
+            <MonthlyChange data={netWorthData} />
+            <Assets data={netWorthData} />
           </div>
           <Details data={netWorthData} />
         </div>

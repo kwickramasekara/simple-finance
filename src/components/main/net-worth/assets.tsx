@@ -1,7 +1,6 @@
 "use client";
 
 import { Pie, PieChart } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -19,7 +18,8 @@ import {
 } from "@/components/ui/chart";
 import assetsMap from "@/lib/maps/assets";
 
-export default function Assets({ data }: { data: NetWorthAssetsCollection }) {
+export default function Assets({ data }: { data: NetWorthAssetsCollection[] }) {
+  const latestData = data[data.length - 1];
   let chartData: {
     asset: string;
     value: number;
@@ -32,7 +32,7 @@ export default function Assets({ data }: { data: NetWorthAssetsCollection }) {
     },
   } satisfies ChartConfig;
 
-  Object.entries(data).forEach(([key, value], index) => {
+  Object.entries(latestData).forEach(([key, value], index) => {
     if (key === "$id" || key === "date") return;
     chartConfig[key] = {
       label: assetsMap[key] ?? key,

@@ -68,3 +68,20 @@ export function removeCommonNulls(data: any[]): any[] {
     return newObj;
   });
 }
+
+export function getMonthlyNetWorthTotals(data: NetWorthAssetsCollection[]) {
+  const monthlyTotals: { month: string; total: number }[] = [];
+
+  data.forEach((item) => {
+    const month = getMonth(item.date);
+    let total = 0;
+
+    Object.values(item).forEach((value) => {
+      if (typeof value === "number") total += value;
+    });
+
+    monthlyTotals.push({ month, total });
+  });
+
+  return monthlyTotals;
+}

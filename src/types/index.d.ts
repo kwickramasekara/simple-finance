@@ -1,5 +1,4 @@
 declare type NetWorthAssetsCollection = {
-  [key: string]: any;
   date: string;
   cash: number;
   stocks: number;

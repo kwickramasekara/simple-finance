@@ -17,41 +17,35 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-];
+import assetsMap from "@/lib/maps/assets";
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Cash",
-    color: "hsl(var(--chart-1))",
-  },
-  safari: {
-    label: "Stock",
-    color: "hsl(var(--chart-2))",
-  },
-  firefox: {
-    label: "CD",
-    color: "hsl(var(--chart-3))",
-  },
-  edge: {
-    label: "Retirement",
-    color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
-  },
-} satisfies ChartConfig;
+export default function Assets({ data }: { data: NetWorthAssetsCollection }) {
+  let chartData: {
+    asset: string;
+    value: number;
+    fill: string;
+  }[] = [];
 
-export default function Assets() {
+  let chartConfig: any = {
+    value: {
+      label: "Value",
+    },
+  } satisfies ChartConfig;
+
+  Object.entries(data).forEach(([key, value], index) => {
+    if (key === "$id" || key === "date") return;
+    chartConfig[key] = {
+      label: assetsMap[key] ?? key,
+      color: `hsl(var(--chart-${index}))`,
+    };
+
+    chartData.push({
+      asset: key,
+      value: value as number,
+      fill: chartConfig[key]?.color ?? "#fff",
+    });
+  });
+
   return (
     <Card className="flex flex-col">
       <CardHeader>
@@ -63,7 +57,7 @@ export default function Assets() {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square max-h-[250px] [&_.recharts-wrapper]:-top-3"
         >
           <PieChart>
             <ChartTooltip
@@ -71,13 +65,13 @@ export default function Assets() {
               content={<ChartTooltipContent hideLabel />}
             />
             <ChartLegend
-              content={<ChartLegendContent nameKey="browser" />}
-              className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
+              content={<ChartLegendContent nameKey="asset" />}
+              className="-translate-y-2 flex-wrap gap-2 [&>*]:justify-center"
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
+              dataKey="value"
+              nameKey="asset"
               innerRadius={60}
               startAngle={90}
               endAngle={450}

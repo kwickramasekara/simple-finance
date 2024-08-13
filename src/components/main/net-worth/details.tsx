@@ -14,21 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn, formatCurrency, getMonth } from "@/lib/utils";
-
-const nameMap: { [key: string]: string } = {
-  cash: "Cash",
-  stocks: "Stocks",
-  cd: "CD",
-  other: "Other",
-  date: "Month",
-  "401k": "401K",
-  ira: "IRA",
-  hsa: "HSA",
-  crypto: "Crypto",
-  bonds: "Bonds",
-  vehicles: "Vehicles",
-  realEstate: "Real Estate",
-};
+import assetsMap from "@/lib/maps/assets";
 
 export default function Details({
   data,
@@ -56,13 +42,13 @@ export default function Details({
                       index > 0 && "text-right"
                     )}
                   >
-                    {nameMap[key]}
+                    {assetsMap[key]}
                   </TableHead>
                 ))}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((item) => (
+              {data.map((item: NetWorthAssetsCollection) => (
                 <TableRow key={item["$id"]}>
                   {Object.keys(item).map(
                     (key, index) =>

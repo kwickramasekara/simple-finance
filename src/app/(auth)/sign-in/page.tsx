@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import Alert from "@/components/common/alert";
 import { OctagonAlert } from "lucide-react";
 import { signInAction } from "@/lib/actions/auth";
 import { useFormState, useFormStatus } from "react-dom";
@@ -43,10 +43,8 @@ export default function SignIn() {
             </div>
             <Submit formStatus={useFormStatus}>Sign In</Submit>
             {state.error && (
-              <Alert variant="destructive" className="max-w-[360px]">
-                <OctagonAlert className="h-4 w-4"></OctagonAlert>
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{state.error}</AlertDescription>
+              <Alert type="error" className="max-w-[360px]">
+                {state.error}
               </Alert>
             )}
           </div>

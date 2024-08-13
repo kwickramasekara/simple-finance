@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
 import { LineChart } from "lucide-react";
 import { getNetWorthAssetsByYear } from "@/lib/actions/db";
+import Alert from "@/components/common/alert";
 // import { revalidatePath } from "next/cache";
 
 export default async function NetWorth() {
   const netWorthData = await getNetWorthAssetsByYear();
+  const netWorthDataLatest = netWorthData?.[netWorthData.length - 1];
 
   // revalidatePath("/net-worth");
   return (
@@ -25,14 +27,20 @@ export default async function NetWorth() {
           Add
         </Button>
       </div>
-      <div className="flex flex-col gap-12">
-        <Overview />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <MonthlyChange />
-          <Assets />
+      {netWorthData === null || netWorthData?.length === 0 ? (
+        <Alert type="error" className="max-w-[360px] mx-auto">
+          No data available.
+        </Alert>
+      ) : (
+        <div className="flex flex-col gap-12">
+          <Overview />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <MonthlyChange />
+            {netWorthDataLatest && <Assets data={netWorthDataLatest} />}
+          </div>
+          <Details data={netWorthData} />
         </div>
-        <Details data={netWorthData} />
-      </div>
+      )}
     </main>
   );
 }

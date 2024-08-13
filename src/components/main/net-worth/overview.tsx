@@ -16,30 +16,33 @@ import {
 } from "@/components/ui/chart";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp } from "lucide-react";
+import { getMonth } from "@/lib/utils";
 
-const chartData = [
-  { month: "January", data: 477483 },
-  { month: "February", data: 494296 },
-  { month: "March", data: 512779 },
-  { month: "April", data: 508339 },
-  { month: "May", data: 531708 },
-  { month: "June", data: 543962 },
-  { month: "July", data: 556279 },
-  { month: "August", data: 570494 },
-  { month: "September", data: 568287 },
-  { month: "October", data: 582676 },
-  { month: "November", data: 580467 },
-  { month: "December", data: 594676 },
-];
+export default function Overview({
+  data,
+}: {
+  data: NetWorthAssetsCollection[];
+}) {
+  const chartConfig = {
+    data: {
+      label: "Net Worth",
+      color: "hsl(var(--chart-2))",
+    },
+  } satisfies ChartConfig;
 
-const chartConfig = {
-  data: {
-    label: "Net Worth",
-    color: "hsl(var(--chart-2))",
-  },
-} satisfies ChartConfig;
+  const chartData: Object[] = [];
 
-export default function Overview() {
+  data.forEach((item) => {
+    const month = getMonth(item.date);
+    let total = 0;
+
+    Object.values(item).forEach((value) => {
+      if (typeof value === "number") total += value;
+    });
+
+    chartData.push({ month, total });
+  });
+
   return (
     <Card>
       <CardHeader>
@@ -99,7 +102,7 @@ export default function Overview() {
               </linearGradient>
             </defs>
             <Area
-              dataKey="data"
+              dataKey="total"
               type="natural"
               fill="url(#fillChart)"
               fillOpacity={0.4}

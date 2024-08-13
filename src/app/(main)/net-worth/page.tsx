@@ -27,16 +27,18 @@ export default async function NetWorth() {
           Add
         </Button>
       </div>
-      {netWorthData === null || netWorthData?.length === 0 ? (
+      {netWorthData === null ||
+      netWorthData?.length === 0 ||
+      !netWorthDataLatest ? (
         <Alert type="error" className="max-w-[360px] mx-auto">
           No data available.
         </Alert>
       ) : (
         <div className="flex flex-col gap-12">
-          <Overview />
+          <Overview data={netWorthData} />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <MonthlyChange />
-            {netWorthDataLatest && <Assets data={netWorthDataLatest} />}
+            <Assets data={netWorthDataLatest} />
           </div>
           <Details data={netWorthData} />
         </div>

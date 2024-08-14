@@ -50,7 +50,7 @@ export default function MonthlyChange({
             accessibilityLayer
             data={chartData}
             margin={{
-              top: 12,
+              top: 16,
             }}
           >
             <defs>

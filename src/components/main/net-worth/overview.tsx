@@ -15,22 +15,29 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp } from "lucide-react";
-import { getMonthlyNetWorthTotals } from "@/lib/utils";
+import { TrendingUp, TrendingDown } from "lucide-react";
+import { cn, formatCurrency, getMonthlyNetWorthTotals } from "@/lib/utils";
 
 export default function Overview({
   data,
 }: {
   data: NetWorthAssetsCollection[];
 }) {
+  const monthlyTotals = getMonthlyNetWorthTotals(data);
+  const lastMonth = monthlyTotals[monthlyTotals.length - 1];
+  const secondLastMonth = monthlyTotals[monthlyTotals.length - 2];
+  const netWorthDiff = lastMonth.total - secondLastMonth.total;
+
   const chartConfig = {
     data: {
       label: "Net Worth",
-      color: "hsl(var(--chart-2))",
+      color: netWorthDiff > 0 ? "hsl(var(--chart-2))" : "hsl(var(--chart-5))",
+    },
+    total: {
+      label: "Total",
     },
   } satisfies ChartConfig;
-
-  const chartData = getMonthlyNetWorthTotals(data);
+  const chartData = monthlyTotals;
 
   return (
     <Card>
@@ -43,13 +50,22 @@ export default function Overview({
             </CardDescription>
           </div>
           <div className="flex flex-col">
-            <p className="font-mono font-bold text-xl text-right">$507K</p>
+            <p className="font-mono font-bold text-xl text-right">
+              {formatCurrency(lastMonth.total, true, true)}
+            </p>
             <Badge
               variant="outline"
-              className="font-mono text-green-500 border-green-500"
+              className={cn("font-mono", {
+                "text-green-500 border-green-500": netWorthDiff > 0,
+                "text-destructive border-destructive": netWorthDiff < 0,
+              })}
             >
-              <TrendingUp size={12} className="mr-2" />
-              $14K
+              {netWorthDiff > 0 ? (
+                <TrendingUp size={12} className="mr-2" />
+              ) : (
+                <TrendingDown size={12} className="mr-2" />
+              )}
+              {formatCurrency(netWorthDiff, true, true)}
             </Badge>
           </div>
         </div>

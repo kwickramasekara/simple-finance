@@ -17,6 +17,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import assetsMap from "@/lib/maps/assets";
+import { chartToolTipCurrency } from "@/components/common/chart-tooltip";
 
 export default function Assets({ data }: { data: NetWorthAssetsCollection[] }) {
   const latestData = data[data.length - 1];
@@ -62,7 +63,18 @@ export default function Assets({ data }: { data: NetWorthAssetsCollection[] }) {
           <PieChart>
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={
+                <ChartTooltipContent
+                  hideLabel
+                  formatter={(value, name) =>
+                    chartToolTipCurrency(
+                      value as number,
+                      name as string,
+                      chartConfig
+                    )
+                  }
+                />
+              }
             />
             <ChartLegend
               content={<ChartLegendContent nameKey="asset" />}

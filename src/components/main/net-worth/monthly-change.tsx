@@ -14,7 +14,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { getMonthlyNetWorthTotals } from "@/lib/utils";
+import { formatCurrency, getMonthlyNetWorthTotals } from "@/lib/utils";
+import { chartToolTipCurrency } from "@/components/common/chart-tooltip";
 
 const chartConfig = {
   difference: {
@@ -57,20 +58,20 @@ export default function MonthlyChange({
               <linearGradient id="colorPositive" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="50%"
-                  stopColor="hsl(var(--chart-2))"
+                  stopColor="hsl(var(--chart-1))"
                   stopOpacity={1}
                 />
                 <stop
                   offset="95%"
                   stopColor="hsl(var(--chart-3))"
-                  stopOpacity={1}
+                  stopOpacity={0.9}
                 />
               </linearGradient>
               <linearGradient id="colorNegative" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
                   stopColor="hsl(var(--chart-3))"
-                  stopOpacity={1}
+                  stopOpacity={0.9}
                 />
                 <stop
                   offset="50%"
@@ -82,7 +83,18 @@ export default function MonthlyChange({
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel hideIndicator />}
+              content={
+                <ChartTooltipContent
+                  hideLabel
+                  formatter={(value, name) =>
+                    chartToolTipCurrency(
+                      value as number,
+                      name as string,
+                      chartConfig
+                    )
+                  }
+                />
+              }
             />
             <XAxis
               dataKey="month"
@@ -96,6 +108,9 @@ export default function MonthlyChange({
                 dataKey="difference"
                 fillOpacity={1}
                 fill="hsl(var(--primary))"
+                formatter={(value: number) =>
+                  formatCurrency(value as number, true, true)
+                }
               />
               {chartData.map((item) => (
                 <Cell

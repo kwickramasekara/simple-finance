@@ -19,9 +19,9 @@ export function cn(...inputs: ClassValue[]) {
  * @returns The month name as a string.
  */
 export function getMonth(date: string, short = false): string {
-  const month = new Date(date).toLocaleString("default", { month: "long" });
-
-  return short ? month.slice(0, 3) : month;
+  return new Date(date).toLocaleString("default", {
+    month: short ? "short" : "long",
+  });
 }
 
 /**

@@ -17,6 +17,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { cn, formatCurrency, getMonthlyNetWorthTotals } from "@/lib/utils";
+import { chartToolTipCurrency } from "@/components/common/chart-tooltip";
 
 export default function Overview({
   data,
@@ -26,15 +27,15 @@ export default function Overview({
   const monthlyTotals = getMonthlyNetWorthTotals(data);
   const lastMonth = monthlyTotals[monthlyTotals.length - 1];
   const secondLastMonth = monthlyTotals[monthlyTotals.length - 2];
-  const netWorthDiff = lastMonth.total - secondLastMonth.total;
+  const netWorthDiff = lastMonth.total - secondLastMonth?.total || 0;
 
   const chartConfig = {
     data: {
       label: "Net Worth",
-      color: netWorthDiff > 0 ? "hsl(var(--chart-2))" : "hsl(var(--chart-5))",
+      color: netWorthDiff >= 0 ? "hsl(var(--chart-1))" : "hsl(var(--chart-5))",
     },
     total: {
-      label: "Total",
+      label: "Net Worth",
     },
   } satisfies ChartConfig;
   const chartData = monthlyTotals;
@@ -53,20 +54,22 @@ export default function Overview({
             <p className="font-mono font-bold text-xl text-right">
               {formatCurrency(lastMonth.total, true, true)}
             </p>
-            <Badge
-              variant="outline"
-              className={cn("font-mono", {
-                "text-green-500 border-green-500": netWorthDiff > 0,
-                "text-destructive border-destructive": netWorthDiff < 0,
-              })}
-            >
-              {netWorthDiff > 0 ? (
-                <TrendingUp size={12} className="mr-2" />
-              ) : (
-                <TrendingDown size={12} className="mr-2" />
-              )}
-              {formatCurrency(netWorthDiff, true, true)}
-            </Badge>
+            {netWorthDiff !== 0 && (
+              <Badge
+                variant="outline"
+                className={cn("font-mono", {
+                  "text-green-500 border-green-500": netWorthDiff > 0,
+                  "text-destructive border-destructive": netWorthDiff < 0,
+                })}
+              >
+                {netWorthDiff > 0 ? (
+                  <TrendingUp size={12} className="mr-2" />
+                ) : (
+                  <TrendingDown size={12} className="mr-2" />
+                )}
+                {formatCurrency(netWorthDiff, true, true)}
+              </Badge>
+            )}
           </div>
         </div>
       </CardHeader>
@@ -90,8 +93,20 @@ export default function Overview({
             />
             <ChartTooltip
               cursor={true}
-              content={<ChartTooltipContent hideIndicator={true} />}
+              content={
+                <ChartTooltipContent
+                  hideLabel
+                  formatter={(value, name) =>
+                    chartToolTipCurrency(
+                      value as number,
+                      name as string,
+                      chartConfig
+                    )
+                  }
+                />
+              }
             />
+
             <defs>
               <linearGradient id="fillChart" x1="0" y1="0" x2="0" y2="1">
                 <stop

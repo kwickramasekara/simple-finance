@@ -81,7 +81,7 @@ function NavLinks() {
 
 function UserNav({ user }: { user: Models.User<Models.Preferences> | null }) {
   return (
-    <div className="w-full p-12">
+    <div className="w-full p-12 user-nav">
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <div className="flex items-center gap-2 cursor-pointer text-muted-foreground hover:text-foreground">

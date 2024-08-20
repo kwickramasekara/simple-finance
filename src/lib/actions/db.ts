@@ -1,8 +1,9 @@
 "use server";
 
-import { Query } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import { stripDbMetadata, removeCommonNulls } from "@/lib/utils";
 import { createAdminClient } from "@/lib/appwrite";
+import { revalidatePath } from "next/cache";
 
 export async function getNetWorthAssetsByYear(
   year?: string
@@ -40,5 +41,48 @@ export async function getNetWorthAssetsByYear(
   } catch (error) {
     console.error("Error:", (error as any)?.response?.message);
     return null;
+  }
+}
+
+export async function addNetWorthAssets(
+  prevState: any,
+  data: FormData
+): Promise<{ error?: string; success?: boolean }> {
+  try {
+    let dataObj: any = {};
+
+    data.forEach((value, key) => {
+      if (key === "date") {
+        if (data.get("date") === "") throw new Error("Date is required");
+        dataObj.date = new Date(value as string).toISOString();
+      } else {
+        value !== "" ? (dataObj[key] = parseFloat(value as string)) : null;
+      }
+    });
+
+    const { database } = await createAdminClient();
+
+    await database.createDocument(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_NETWORTH_ASSETS_COLLECTION_ID!,
+      ID.unique(),
+      dataObj
+    );
+
+    revalidatePath("/net-worth");
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    if ((error as Error).message) {
+      return {
+        error: (error as Error).message,
+      };
+    } else {
+      return {
+        error: JSON.stringify((error as any)?.response?.message),
+      };
+    }
   }
 }

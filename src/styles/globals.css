@@ -75,6 +75,20 @@
   }
 }
 
+/* Native calendar style updates */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  position: absolute;
+  right: 8%;
+}
+input::-webkit-datetime-edit-day-field:focus,
+input::-webkit-datetime-edit-month-field:focus,
+input::-webkit-datetime-edit-year-field:focus {
+  background-color: steelblue;
+  color: white;
+}
+
+/* Background gradient pattern */
 .main-bg {
   background-size: 100% 100%;
   background-position: 0px 0px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
@@ -93,6 +107,7 @@
     radial-gradient(160% 154% at 711px -303px, #03ff00ff 0%, #073affff 100%);
 }
 
+/* User nav position in desktop */
 @media (min-height: 768px) {
   .user-nav {
     position: fixed;

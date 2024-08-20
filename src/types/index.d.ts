@@ -12,5 +12,5 @@ declare type NetWorthAssetsCollection = {
   vehicles?: number;
   realEstate?: null;
   other?: null;
-  $id: string;
+  $id?: string;
 };

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Alert from "@/components/common/alert";
-import { OctagonAlert } from "lucide-react";
 import { signInAction } from "@/lib/actions/auth";
 import { useFormState, useFormStatus } from "react-dom";
 import Submit from "@/components/forms/submit";

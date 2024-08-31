@@ -24,10 +24,10 @@ import {
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { signOutAction } from "@/lib/actions/auth";
+import { signOut } from "@/lib/api/account";
 
 async function handleSignOut() {
-  await signOutAction();
+  await signOut();
 }
 
 function NavLinks() {
@@ -99,12 +99,12 @@ function UserNav({ user }: { user: Models.User<Models.Preferences> | null }) {
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="min-w-48">
-          <DropdownMenuItem className="cursor-pointer text-base">
-            <Link href="/account" className="flex items-center">
+          <Link href="/account">
+            <DropdownMenuItem className="cursor-pointer text-base">
               <SquareUserRound size={16} className="mr-2" />
               Account
-            </Link>
-          </DropdownMenuItem>
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="cursor-pointer text-base"

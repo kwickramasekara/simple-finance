@@ -1,7 +1,7 @@
 "use server";
 
 import { ID, Query } from "node-appwrite";
-import { stripDbMetadata, removeCommonNulls } from "@/lib/utils";
+import { stripDbMetadata, removeCommonNulls, handleError } from "@/lib/utils";
 import { createAdminClient } from "@/lib/appwrite";
 import { revalidatePath } from "next/cache";
 
@@ -75,14 +75,6 @@ export async function addNetWorthAssets(
       success: true,
     };
   } catch (error) {
-    if ((error as Error).message) {
-      return {
-        error: (error as Error).message,
-      };
-    } else {
-      return {
-        error: JSON.stringify((error as any)?.response?.message),
-      };
-    }
+    return handleError(error);
   }
 }

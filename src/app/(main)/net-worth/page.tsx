@@ -5,7 +5,7 @@ import Details from "@/components/main/net-worth/details";
 import Alert from "@/components/common/alert";
 import AddAssets from "@/components/main/net-worth/add-assets";
 import { LineChart } from "lucide-react";
-import { getNetWorthAssetsByYear } from "@/lib/actions/db";
+import { getNetWorthAssetsByYear } from "@/lib/api/db";
 
 export default async function NetWorth() {
   const netWorthData = await getNetWorthAssetsByYear();

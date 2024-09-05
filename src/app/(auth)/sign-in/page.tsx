@@ -58,14 +58,14 @@ export default function SignIn() {
       </div>
       <div className="grid gap-4 text-sm text-muted-foreground">
         <p>
-          Don&apos;t have an account?{" "}
-          <Link href="/sign-up" className="underline">
+          Don&apos;t have an account?
+          <Link href="/sign-up" className="underline ml-1">
             Sign up
           </Link>
         </p>
         <p>
-          Forgot password?{" "}
-          <Link href="#" className="underline">
+          Forgot password?
+          <Link href="#" className="underline ml-1">
             Reset
           </Link>
         </p>

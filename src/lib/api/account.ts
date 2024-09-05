@@ -177,12 +177,14 @@ export async function disableMFAAction(
   }
 }
 
-export async function createMFAChallenge(): Promise<APIResponse> {
+export async function createMFAChallenge(
+  recovery: boolean = false
+): Promise<APIResponse> {
   try {
     const { account } = await createSessionClient();
 
     const challenge = await account.createMfaChallenge(
-      AuthenticationFactor.Totp
+      recovery ? AuthenticationFactor.Recoverycode : AuthenticationFactor.Totp
     );
 
     return {

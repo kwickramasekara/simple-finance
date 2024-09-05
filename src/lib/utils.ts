@@ -149,3 +149,21 @@ export function getMonthlyNetWorthTotals(data: NetWorthAssetsCollection[]) {
 
   return monthlyTotals;
 }
+
+/**
+ * Returns the error message from an error object or Appwrite response object.
+ *
+ * @param error - The error object to extract the message from.
+ * @returns The error message as a APIResponse object.
+ */
+export function handleError(error: any): APIResponse {
+  if ((error as Error).message) {
+    return {
+      error: (error as Error).message,
+    };
+  } else {
+    return {
+      error: JSON.stringify((error as any)?.response?.message),
+    };
+  }
+}

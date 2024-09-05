@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { signUpAction } from "@/lib/actions/auth";
+import { signUpAction } from "@/lib/api/account";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormState, useFormStatus } from "react-dom";
@@ -43,12 +43,8 @@ export default function SignUp() {
             </div>
             <Input name="password" type="password" minLength={8} required />
           </div>
-          <Submit formStatus={useFormStatus}>Sign Up</Submit>
-          {state.error && (
-            <Alert type="error" className="max-w-[360px]">
-              {state.error}
-            </Alert>
-          )}
+          <Submit>Sign Up</Submit>
+          {state.error && <Alert type="error">{state.error}</Alert>}
         </div>
       </form>
       <div className="grid gap-4 text-sm text-muted-foreground">

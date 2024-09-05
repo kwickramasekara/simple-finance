@@ -1,7 +1,7 @@
 // https://appwrite.io/docs/tutorials/nextjs-ssr-auth/step-3
 
 "use server";
-import { Client, Account, Databases } from "node-appwrite";
+import { Client, Account, Databases, Avatars } from "node-appwrite";
 import { cookies } from "next/headers";
 
 export async function createSessionClient() {
@@ -19,6 +19,9 @@ export async function createSessionClient() {
   return {
     get account() {
       return new Account(client);
+    },
+    get avatar() {
+      return new Avatars(client);
     },
   };
 }

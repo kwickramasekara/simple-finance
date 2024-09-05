@@ -14,3 +14,8 @@ declare type NetWorthAssetsCollection = {
   other?: null;
   $id?: string;
 };
+
+declare type APIResponse = {
+  error?: string;
+  success?: any;
+};

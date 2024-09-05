@@ -28,7 +28,7 @@ export default function CustomAlert({
       {type === "success" && <CircleCheckBig size={16} />}
       {type === "info" && <Info size={16} />}
       <AlertTitle className="capitalize">{type}</AlertTitle>
-      <AlertDescription>{children}</AlertDescription>
+      <AlertDescription className="break-words">{children}</AlertDescription>
     </Alert>
   );
 }

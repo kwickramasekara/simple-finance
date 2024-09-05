@@ -4,15 +4,25 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Alert from "@/components/common/alert";
-import { signInAction } from "@/lib/actions/auth";
-import { useFormState, useFormStatus } from "react-dom";
+import { signInAction } from "@/lib/api/account";
+import { useFormState } from "react-dom";
 import Submit from "@/components/forms/submit";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
+  const MFA_ERROR =
+    "More factors are required to complete the sign in process.";
+  const router = useRouter();
   const initialState = {
     error: "",
   };
   const [state, formAction] = useFormState(signInAction, initialState);
+
+  // success state is already handled in the layout component
+  useEffect(() => {
+    if (state.error === MFA_ERROR) router.push("/sign-in/mfa");
+  }, [state.error]);
 
   return (
     <div className="mx-auto px-2 grid gap-10 min-w-[360px]">
@@ -40,25 +50,23 @@ export default function SignIn() {
               </div>
               <Input name="password" type="password" required />
             </div>
-            <Submit formStatus={useFormStatus}>Sign In</Submit>
-            {state.error && (
-              <Alert type="error" className="max-w-[360px]">
-                {state.error}
-              </Alert>
+            <Submit>Sign In</Submit>
+            {state.error && state.error !== MFA_ERROR && (
+              <Alert type="error">{state.error}</Alert>
             )}
           </div>
         </form>
       </div>
       <div className="grid gap-4 text-sm text-muted-foreground">
         <p>
-          Don&apos;t have an account?{" "}
-          <Link href="/sign-up" className="underline">
+          Don&apos;t have an account?
+          <Link href="/sign-up" className="underline ml-1">
             Sign up
           </Link>
         </p>
         <p>
-          Forgot password?{" "}
-          <Link href="#" className="underline">
+          Forgot password?
+          <Link href="#" className="underline ml-1">
             Reset
           </Link>
         </p>

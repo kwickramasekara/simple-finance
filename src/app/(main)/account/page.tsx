@@ -156,7 +156,7 @@ export default function Account() {
                     <div>
                       <Label htmlFor="mfa">Recovery codes</Label>
                       <p className="text-sm text-muted-foreground">
-                        Use in case you can't receive MFA codes.
+                        Use in case you can&apos;t receive MFA codes.
                       </p>
                     </div>
                     <div className="flex-1 text-right">

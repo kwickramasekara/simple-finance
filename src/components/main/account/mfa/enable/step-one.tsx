@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useEffect } from "react";
+import Image from "next/image";
 
 export default function MFAStepOne({
   stepper,
@@ -24,9 +24,10 @@ export default function MFAStepOne({
         <p className="text-sm text-muted-foreground">
           Open your preferred authenticator app and choose to scan the QR code.
         </p>
-        <img
+        <Image
           width="160"
           height="160"
+          alt="QR code"
           className="mx-auto mt-4"
           src={`data:image/png;base64,${qr}`}
         />

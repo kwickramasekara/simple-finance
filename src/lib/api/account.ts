@@ -1,7 +1,6 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { ID, AuthenticatorType, AuthenticationFactor } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "@/lib/appwrite";
 import { handleError } from "@/lib/utils";
@@ -32,11 +31,13 @@ export async function signUpAction(prevState: any, formData: FormData) {
       sameSite: "strict",
       secure: true,
     });
+
+    return {
+      success: true,
+    };
   } catch (error) {
     return handleError(error);
   }
-
-  redirect("/dashboard");
 }
 
 export async function signInAction(prevState: any, formData: FormData) {
@@ -60,11 +61,13 @@ export async function signInAction(prevState: any, formData: FormData) {
     // MFA
     const { account: clientAccount } = await createSessionClient();
     await clientAccount.get(); // will throw error if MFA is required
+
+    return {
+      success: true,
+    };
   } catch (error) {
     return handleError(error);
   }
-
-  redirect("/dashboard");
 }
 
 export async function signOut() {

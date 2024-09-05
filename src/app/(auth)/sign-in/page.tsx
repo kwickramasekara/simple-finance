@@ -19,6 +19,7 @@ export default function SignIn() {
   };
   const [state, formAction] = useFormState(signInAction, initialState);
 
+  // success state is already handled in the layout component
   useEffect(() => {
     if (state.error === MFA_ERROR) router.push("/sign-in/mfa");
   }, [state.error]);

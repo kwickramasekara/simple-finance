@@ -27,8 +27,14 @@ export default function OTP({
     const val = (event.target as HTMLInputElement).value;
 
     if ((recovery && val.length === 10) || (!recovery && val.length === 6)) {
-      // https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#programmatic-form-submission
-      (event.target as HTMLInputElement).form?.requestSubmit();
+      // prevent duplicate submission - especially an issue on Safari
+      if (
+        !(event.target as HTMLInputElement).matches(":autofill") ||
+        !(event.target as HTMLInputElement).matches(":-webkit-autofill")
+      ) {
+        // https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#programmatic-form-submission
+        (event.target as HTMLInputElement).form?.requestSubmit();
+      }
     }
   };
 

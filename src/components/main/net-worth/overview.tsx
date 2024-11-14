@@ -74,7 +74,10 @@ export default function Overview({
         </div>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="max-h-72 w-full">
+        <ChartContainer
+          config={chartConfig}
+          className="h-48 sm:h-60 md:h-64 lg:h-72 w-full"
+        >
           <AreaChart
             accessibilityLayer
             data={chartData}

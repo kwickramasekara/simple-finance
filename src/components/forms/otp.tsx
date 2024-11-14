@@ -23,10 +23,25 @@ export default function OTP({
 }) {
   const { pending } = useFormStatus();
 
+  const handleChange = function (event: React.KeyboardEvent<HTMLInputElement>) {
+    const val = (event.target as HTMLInputElement).value;
+    if ((recovery && val.length === 10) || (!recovery && val.length === 6)) {
+      if (
+        (event.target as HTMLInputElement).matches(":autofill") ||
+        (event.target as HTMLInputElement).matches(":-webkit-autofill")
+      ) {
+        window.alert("OTP autofill detected. Please enter the OTP manually.");
+        // https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#programmatic-form-submission
+        // (event.target as HTMLInputElement).form?.requestSubmit();
+      }
+    }
+  };
+
   return (
     <InputOTP
       maxLength={recovery ? 10 : 6}
       pattern={recovery ? REGEXP_ONLY_DIGITS_AND_CHARS : REGEXP_ONLY_DIGITS}
+      onKeyUp={handleChange}
       name="otp"
       disabled={pending || disabled}
       autoFocus

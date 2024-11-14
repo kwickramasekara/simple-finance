@@ -13,3 +13,7 @@ Use Appwrite CLI sync database documents. Requires `appwrite-cli` and `jq`.
 5. `npx appwrite init project`
 6. `appwrite databases listDocuments --databaseId <dbID> --collectionId <collectionid> --json | jq '.documents[] | del(.["$id"], .["$createdAt"], .["$updatedAt"], .["$permissions"], .["$databaseId"], .["$collectionId"])' > data.json`
 7. `npx appwrite databases createDocument --databaseId <dbId> --collectionId <collectionid> --documentId <uniqueId> --data <stringifiedJSONObject>`
+
+## Gotchas
+
+Auth does not work on Safari with localhost due to how it handles cookies. May want to use BrowserSync or Safari iOS simulators depending on your needs.

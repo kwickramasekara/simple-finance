@@ -16,4 +16,4 @@ Use Appwrite CLI sync database documents. Requires `appwrite-cli` and `jq`.
 
 ## Gotchas
 
-Auth does not work on Safari with localhost due to how it handles cookies. May want to use BrowserSync or Safari iOS simulators depending on your needs.
+Auth does not work on Safari with localhost due to how it handles cookies. May want to use Vercel previews or Safari iOS simulators depending on your needs.

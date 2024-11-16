@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "dev-safari": "next dev -H sf-local.keithw.me --experimental-https",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

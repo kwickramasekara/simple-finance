@@ -86,7 +86,7 @@ export default function Assets({ data }: { data: NetWorthAssetsCollection[] }) {
               nameKey="asset"
               innerRadius={60}
               startAngle={90}
-              endAngle={450}
+              endAngle={-270}
               paddingAngle={4}
             />
           </PieChart>

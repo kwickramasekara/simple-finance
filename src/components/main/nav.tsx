@@ -13,7 +13,7 @@ import {
   Hourglass,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,61 +25,69 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { signOut } from "@/lib/api/account";
+import React from "react";
 
 async function handleSignOut() {
   await signOut();
 }
 
-function NavLinks() {
+function NavLinks({
+  setDrawerOpen,
+}: {
+  setDrawerOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const path = usePathname();
+
+  const links = [
+    {
+      href: "/dashboard",
+      icon: LayoutDashboard,
+      label: "Dashboard",
+    },
+    {
+      href: "/budget",
+      icon: Scale,
+      label: "Budget",
+    },
+    {
+      href: "/net-worth",
+      icon: LineChart,
+      label: "Net Worth",
+    },
+    {
+      href: "/retirement",
+      icon: Hourglass,
+      label: "Retirement",
+    },
+  ];
 
   return (
     <nav className="w-full p-12 flex flex-col gap-6">
-      <Link
-        href="/dashboard"
-        className={cn(
-          "flex gap-2 text-muted-foreground font-semibold hover:text-foreground",
-          path === "/dashboard" && "text-foreground"
-        )}
-      >
-        <LayoutDashboard />
-        Dashboard
-      </Link>
-      <Link
-        href="/budget"
-        className={cn(
-          "flex gap-2 text-muted-foreground font-semibold hover:text-foreground",
-          path === "/budget" && "text-foreground"
-        )}
-      >
-        <Scale />
-        Budget
-      </Link>
-      <Link
-        href="/net-worth"
-        className={cn(
-          "flex gap-2 text-muted-foreground font-semibold hover:text-foreground",
-          path === "/net-worth" && "text-foreground"
-        )}
-      >
-        <LineChart />
-        Net Worth
-      </Link>
-      <Link
-        href="/retirement"
-        className={cn(
-          "flex gap-2 text-muted-foreground font-semibold hover:text-foreground",
-          path === "/retirement" && "text-foreground"
-        )}
-      >
-        <Hourglass />
-        Retirement
-      </Link>
+      {links.map(({ href, icon, label }) => (
+        <Link
+          key={label}
+          onClick={() => setDrawerOpen && setDrawerOpen(false)}
+          href={href}
+          className={cn(
+            "flex gap-2 text-muted-foreground font-semibold hover:text-foreground",
+            path === href && "text-foreground"
+          )}
+        >
+          {React.createElement(icon)}
+          {label}
+        </Link>
+      ))}
     </nav>
   );
 }
 
-function UserNav({ user }: { user: Models.User<Models.Preferences> | null }) {
+function UserNav({
+  user,
+  setDrawerOpen,
+}: {
+  user: Models.User<Models.Preferences> | null;
+  setDrawerOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   return (
     <div className="w-full p-12 user-nav">
       <DropdownMenu modal={false}>
@@ -99,7 +107,10 @@ function UserNav({ user }: { user: Models.User<Models.Preferences> | null }) {
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="min-w-48">
-          <Link href="/account">
+          <Link
+            href="/account"
+            onClick={() => setDrawerOpen && setDrawerOpen(false)}
+          >
             <DropdownMenuItem className="cursor-pointer text-base">
               <SquareUserRound size={16} className="mr-2" />
               Account
@@ -119,16 +130,17 @@ function UserNav({ user }: { user: Models.User<Models.Preferences> | null }) {
   );
 }
 function DrawerNav({ user }: { user: Models.User<Models.Preferences> | null }) {
+  const [open, setOpen] = React.useState(false);
+
   return (
-    <Drawer>
-      <DrawerTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Menu />
-        </Button>
-      </DrawerTrigger>
+    <Drawer open={open}>
+      <Button variant="outline" size="icon" onClick={() => setOpen(true)}>
+        <Menu />
+      </Button>
+
       <DrawerContent>
-        <NavLinks />
-        <UserNav user={user} />
+        <NavLinks setDrawerOpen={setOpen} />
+        <UserNav user={user} setDrawerOpen={setOpen} />
       </DrawerContent>
     </Drawer>
   );

@@ -167,3 +167,11 @@ export function handleError(error: any): APIResponse {
     };
   }
 }
+
+/**
+ * Parses and stringifies an object to remove any circular references.
+ *
+ * @param value - The object to parse and stringify.
+ * @returns The parsed and stringified object.
+ */
+export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));

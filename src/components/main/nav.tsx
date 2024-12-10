@@ -11,6 +11,7 @@ import {
   Scale,
   LineChart,
   Hourglass,
+  Unplug,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
@@ -69,7 +70,7 @@ function NavLinks({
           onClick={() => setDrawerOpen && setDrawerOpen(false)}
           href={href}
           className={cn(
-            "flex gap-2 text-muted-foreground font-semibold hover:text-foreground",
+            "flex gap-2 text-muted-foreground font-medium hover:text-foreground",
             path === href && "text-foreground"
           )}
         >
@@ -114,6 +115,16 @@ function UserNav({
             <DropdownMenuItem className="cursor-pointer text-base">
               <SquareUserRound size={16} className="mr-2" />
               Account
+            </DropdownMenuItem>
+          </Link>
+          <DropdownMenuSeparator />
+          <Link
+            href="/connections"
+            onClick={() => setDrawerOpen && setDrawerOpen(false)}
+          >
+            <DropdownMenuItem className="cursor-pointer text-base">
+              <Unplug size={16} className="mr-2" />
+              Connections
             </DropdownMenuItem>
           </Link>
           <DropdownMenuSeparator />

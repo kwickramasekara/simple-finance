@@ -15,7 +15,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { formatCurrency, getMonthlyNetWorthTotals } from "@/lib/utils";
-import { chartToolTipCurrency } from "@/components/common/chart-tooltip";
+import { chartToolTipCurrency } from "@/components/main/chart-tooltip";
 
 const chartConfig = {
   difference: {

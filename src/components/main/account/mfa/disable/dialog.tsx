@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
 import { createMFAChallenge, disableMFAAction } from "@/lib/api/account";
-import Loading from "@/components/common/loading";
+import Loading from "@/components/main/loading";
 import { useFormState } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { CircleCheck } from "lucide-react";

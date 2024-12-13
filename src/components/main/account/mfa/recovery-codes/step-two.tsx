@@ -1,7 +1,7 @@
 import Alert from "@/components/common/alert";
 import { regenerateRecoveryCodes } from "@/lib/api/account";
 import { useEffect, useState } from "react";
-import Loading from "@/components/common/loading";
+import Loading from "@/components/main/loading";
 
 export default function MFARegerateCodesStepTwo() {
   const [error, setError] = useState<string | null>(null);

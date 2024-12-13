@@ -17,7 +17,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import assetsMap from "@/lib/maps/assets";
-import { chartToolTipCurrency } from "@/components/common/chart-tooltip";
+import { chartToolTipCurrency } from "@/components/main/chart-tooltip";
 
 export default function Assets({ data }: { data: NetWorthAssetsCollection[] }) {
   const latestData = data[data.length - 1];

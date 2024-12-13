@@ -17,7 +17,7 @@ import MFAStepThree from "./step-three";
 import MFAStepFour from "./step-four";
 import { createMFA } from "@/lib/api/account";
 import Alert from "@/components/common/alert";
-import Loading from "@/components/common/loading";
+import Loading from "@/components/main/loading";
 
 export default function MFEnableDialog({
   isOpen,

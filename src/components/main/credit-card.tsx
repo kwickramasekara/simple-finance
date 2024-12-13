@@ -1,5 +1,3 @@
-import { cn } from "@/lib/utils";
-
 export default function CreditCard({
   mask,
   bgColor,
@@ -11,14 +9,17 @@ export default function CreditCard({
 }) {
   return (
     <div
-      className={cn(
-        "flex flex-col justify-between p-[5px] w-16 h-10 rounded-sm",
-        bgColor ? `bg-[${bgColor}]` : "bg-gray-800"
-      )}
+      className="flex flex-col justify-between p-[5px] w-16 h-10 rounded-sm bg-gray-800"
+      style={{ backgroundColor: bgColor }}
     >
       <div>
         {logo && (
-          <img src={`data:image/png;base64, ${logo}`} width={14} height={14} />
+          <img
+            className="bg-gray-200 rounded-full"
+            src={`data:image/png;base64, ${logo}`}
+            width={14}
+            height={14}
+          />
         )}
       </div>
       {mask && (

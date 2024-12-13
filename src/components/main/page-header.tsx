@@ -10,7 +10,7 @@ export default function PageHeader({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="flex justify-between mb-12">
+    <div className="flex justify-between items-center h-10 mb-12">
       <div className="flex gap-2">
         {React.createElement(icon)}
         <h1 className="text-xl font-semibold">{title}</h1>

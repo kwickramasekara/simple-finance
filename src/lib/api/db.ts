@@ -39,7 +39,10 @@ export async function getNetWorthAssetsByYear(
 
     return filteredResult as NetWorthAssetsCollection[];
   } catch (error) {
-    console.error("Error:", (error as any)?.response?.message);
+    console.error(
+      "Error (getNetWorthAssetsByYear):",
+      (error as any)?.response?.message
+    );
     return null;
   }
 }
@@ -76,5 +79,67 @@ export async function addNetWorthAssets(
     };
   } catch (error) {
     return handleError(error);
+  }
+}
+
+export async function setAppData(key: string, value: unknown) {
+  try {
+    const { database } = await createAdminClient();
+
+    await database.updateDocument(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_APP_DATA_COLLECTION_ID!,
+      "app_data",
+      { [key]: value }
+    );
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.error("Error (setAppData):", (error as any)?.response?.message);
+    return null;
+  }
+}
+
+export async function setInstitutionConnectionData(data: object) {
+  try {
+    const { database } = await createAdminClient();
+
+    await database.createDocument(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!,
+      ID.unique(),
+      data
+    );
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.error(
+      "Error (setInstitutionConnectionData):",
+      (error as any)?.response?.message
+    );
+    return null;
+  }
+}
+
+export async function getInstitutionConnectionData() {
+  try {
+    const { database } = await createAdminClient();
+
+    const result = await database.listDocuments(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!
+    );
+
+    return result.documents;
+  } catch (error) {
+    console.error(
+      "Error (getInstitutionConnectionData):",
+      (error as any)?.response?.message
+    );
+    return null;
   }
 }

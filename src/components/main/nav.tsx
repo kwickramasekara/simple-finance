@@ -8,10 +8,9 @@ import {
   SquareUserRound,
   Menu,
   LayoutDashboard,
-  Scale,
   LineChart,
-  Hourglass,
   Unplug,
+  Wallet,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
@@ -46,19 +45,14 @@ function NavLinks({
       label: "Dashboard",
     },
     {
-      href: "/budget",
-      icon: Scale,
-      label: "Budget",
+      href: "/expenses",
+      icon: Wallet,
+      label: "Expenses",
     },
     {
       href: "/net-worth",
       icon: LineChart,
       label: "Net Worth",
-    },
-    {
-      href: "/retirement",
-      icon: Hourglass,
-      label: "Retirement",
     },
   ];
 

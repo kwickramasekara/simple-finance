@@ -6,19 +6,15 @@ import Alert from "@/components/common/alert";
 import AddAssets from "@/components/main/net-worth/add-assets";
 import { LineChart } from "lucide-react";
 import { getNetWorthAssetsByYear } from "@/lib/api/db";
+import PageHeader from "@/components/main/page-header";
 
 export default async function NetWorth() {
   const netWorthData = await getNetWorthAssetsByYear();
 
   return (
     <main>
-      <div className="flex justify-between items-center mb-12">
-        <div className="flex">
-          <LineChart className="mr-2" />
-          <h1 className="text-xl font-semibold">Net Worth</h1>
-        </div>
-        <AddAssets />
-      </div>
+      <PageHeader title="Net Worth" icon={LineChart} children={<AddAssets />} />
+
       {netWorthData === null || netWorthData?.length === 0 ? (
         <Alert type="error" className="max-w-[360px] mx-auto">
           No data available.

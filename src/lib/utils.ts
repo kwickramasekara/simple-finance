@@ -192,6 +192,27 @@ export async function getLogoUsingURL(url: string | null | undefined) {
 }
 
 /**
+ * Returns the ordinal suffix for a given day of the month.
+ *
+ * @param day - The day of the month (1-31).
+ * @returns The ordinal suffix ("st", "nd", "rd", "th") for the given day.
+ */
+export function getOrdinalSuffix(day: number): string {
+  if (day >= 11 && day <= 13) return "th";
+
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+}
+
+/**
  * Parses and stringifies an object to remove any circular references.
  *
  * @param value - The object to parse and stringify.

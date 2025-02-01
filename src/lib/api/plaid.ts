@@ -2,9 +2,13 @@
 
 import { plaidClient } from "@/lib/plaid";
 import { getLogoUsingURL, parseStringify } from "@/lib/utils";
-import { setAppData, setInstitutionConnectionData } from "@/lib/api/db";
-import { CountryCode, Products } from "plaid";
+import {
+  getInstitutionConnectionData,
+  setInstitutionConnectionData,
+} from "@/lib/api/db";
+import { CountryCode, CreditAccountSubtype, Products } from "plaid";
 import { revalidatePath } from "next/cache";
+import { getBillingDates } from "@/lib/utils/dates";
 
 const getAccessToken = async (publicToken: string) => {
   try {
@@ -13,11 +17,7 @@ const getAccessToken = async (publicToken: string) => {
       public_token: publicToken,
     });
 
-    const accessToken = response.data.access_token;
-
-    await setAppData("plaid_access_token", accessToken);
-
-    return accessToken;
+    return response.data.access_token;
   } catch (error) {
     console.error("Error (getAccessToken):", error);
   }
@@ -35,7 +35,7 @@ const getConnectedAccounts = async (accessToken: string) => {
   }
 };
 
-const getInstitutionConnectionData = async (institutionId: string) => {
+const getInstitutionData = async (institutionId: string) => {
   try {
     const institutionResponse = await plaidClient.institutionsGetById({
       institution_id: institutionId,
@@ -47,7 +47,7 @@ const getInstitutionConnectionData = async (institutionId: string) => {
 
     return institutionResponse.data;
   } catch (error) {
-    console.error("Error (getInstitutionConnectionData):", error);
+    console.error("Error (getInstitutionData):", error);
   }
 };
 
@@ -56,6 +56,11 @@ export const createLinkToken = async (userId: string) => {
     const tokenParams = {
       user: {
         client_user_id: userId,
+      },
+      account_filters: {
+        credit: {
+          account_subtypes: ["credit card"] as CreditAccountSubtype[],
+        },
       },
       client_name: "Simple Finance",
       products: ["transactions"] as Products[],
@@ -86,7 +91,7 @@ export const processConnection = async ({
     const institutionId = accountData && accountData.item.institution_id;
 
     const institutionData =
-      institutionId && (await getInstitutionConnectionData(institutionId));
+      institutionId && (await getInstitutionData(institutionId));
 
     const intitutionLogo =
       institutionData &&
@@ -96,6 +101,7 @@ export const processConnection = async ({
     if (accountData && institutionData) {
       for (const account of accountData.accounts) {
         const dbData = {
+          access_token: accessToken,
           account_id: account.account_id,
           name: account.name || null,
           official_name: account.official_name || null,
@@ -120,14 +126,37 @@ export const processConnection = async ({
 };
 
 export const getTransactions = async () => {
-  try {
-    const response = await plaidClient.transactionsGet({
-      access_token: process.env.PLAID_ACCESS_TOKEN!,
-      start_date: "2024-06-01",
-      end_date: "2024-12-06",
-    });
+  const connections = await getInstitutionConnectionData();
 
-    return parseStringify(response.data.transactions);
+  if (!connections) return [];
+
+  try {
+    const allTransactions = await Promise.all(
+      connections.map(async (connection) => {
+        const billingDates = getBillingDates(connection.billing_cycle);
+        const transactions = await plaidClient.transactionsGet({
+          access_token: connection.access_token,
+          start_date: billingDates.startDate,
+          end_date: billingDates.endDate,
+        });
+
+        return {
+          account: {
+            id: connection.account_id,
+            givenName: connection.given_name,
+            officialName: connection.official_name,
+            name: connection.name,
+            mask: connection.mask,
+            institutionColor: connection.institution_color,
+            institutionLogo: connection.institution_logo,
+            billingCycle: connection.billing_cycle,
+          },
+          transactions: transactions.data.transactions,
+        };
+      })
+    );
+
+    return allTransactions;
   } catch (error) {
     console.error("Error (getTransactions):", error);
   }

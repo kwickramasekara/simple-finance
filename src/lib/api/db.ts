@@ -82,26 +82,6 @@ export async function addNetWorthAssets(
   }
 }
 
-export async function setAppData(key: string, value: unknown) {
-  try {
-    const { database } = await createAdminClient();
-
-    await database.updateDocument(
-      process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_APP_DATA_COLLECTION_ID!,
-      "app_data",
-      { [key]: value }
-    );
-
-    return {
-      success: true,
-    };
-  } catch (error) {
-    console.error("Error (setAppData):", (error as any)?.response?.message);
-    return null;
-  }
-}
-
 export async function setInstitutionConnectionData(data: object) {
   try {
     const { database } = await createAdminClient();

@@ -37,7 +37,7 @@ export default async function Connections() {
         {connections &&
           connections.map((connection) => (
             <Card key={connection.$id}>
-              <CardContent className="p-10">
+              <CardContent className="p-4">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex w-1/2 items-center space-x-4">
                     <CreditCard
@@ -47,7 +47,7 @@ export default async function Connections() {
                     />
 
                     <div>
-                      <p className="font-medium">
+                      <p className="font-medium truncate w-36 md:w-72 xl:w-96">
                         {connection.given_name ||
                           connection.official_name ||
                           connection.name}
@@ -58,7 +58,7 @@ export default async function Connections() {
                     </div>
                   </div>
 
-                  <div className="w-1/4 text-center">
+                  <div className="hidden sm:flex flex-col w-1/4 text-center">
                     <p>
                       {connection.billing_cycle &&
                         `${connection.billing_cycle}${getOrdinalSuffix(

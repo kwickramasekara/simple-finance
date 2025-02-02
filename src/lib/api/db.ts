@@ -111,7 +111,8 @@ export async function getInstitutionConnectionData() {
 
     const result = await database.listDocuments(
       process.env.APPWRITE_DATABASE_ID!,
-      process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!
+      process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!,
+      [Query.limit(25)]
     );
 
     return result.documents;

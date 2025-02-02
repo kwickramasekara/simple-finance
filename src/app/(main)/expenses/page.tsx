@@ -18,6 +18,28 @@ export default async function Expenses() {
     .flat()
     .sort(sortByDate);
 
+  const getTotal = (transactions: Transaction[]) => {
+    return transactions.reduce((acc, transaction) => {
+      return transaction.category?.[0]?.toLowerCase() === "payment"
+        ? acc
+        : acc + transaction.amount;
+    }, 0);
+  };
+
+  const headerMarkup = (headerText: string, transactions: Transaction[]) => {
+    return (
+      <p className="grid gap-2 mx-4 my-4 font-medium text-center">
+        <span>{headerText}</span>
+        <span className="text-muted-foreground font-mono">
+          {new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(getTotal(transactions))}
+        </span>
+      </p>
+    );
+  };
+
   const transactionsMarkup = (transactions: Transaction[]) => {
     return transactions.map((transaction: Transaction) => (
       <Card
@@ -104,17 +126,17 @@ export default async function Expenses() {
           </TabsList>
           <TabsContent value="all">
             <div className="grid grid-cols-1 gap-2">
-              <p className="text-center my-4 font-medium">All Transactions</p>
-
+              {headerMarkup("All Transactions", allTxs)}
               {transactionsMarkup(allTxs)}
             </div>
           </TabsContent>
           {txs?.map(({ account, transactions }) => (
             <TabsContent key={account.id} value={account.id}>
               <div className="grid grid-cols-1 gap-2">
-                <p className="text-center my-4 font-medium">
-                  {account.givenName || account.officialName || account.name}
-                </p>
+                {headerMarkup(
+                  account.givenName || account.officialName || account.name,
+                  transactions
+                )}
                 {transactionsMarkup(transactions)}
               </div>
             </TabsContent>

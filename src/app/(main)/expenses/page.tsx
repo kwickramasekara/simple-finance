@@ -110,9 +110,7 @@ export default async function Expenses() {
 
       {txs && (
         <Tabs defaultValue="all">
-          <TabsList
-            className={cn("grid w-full gap-2", `grid-cols-${txs.length + 1}`)}
-          >
+          <TabsList className={cn("grid w-full gap-2", `grid-cols-6`)}>
             <TabsTrigger value="all">All</TabsTrigger>
             {txs?.map(({ account }) => (
               <TabsTrigger key={account.id} value={account.id}>

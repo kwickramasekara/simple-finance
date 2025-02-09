@@ -13,7 +13,9 @@ export default async function NetWorth() {
 
   return (
     <main>
-      <PageHeader title="Net Worth" icon={LineChart} children={<AddAssets />} />
+      <PageHeader title="Net Worth" icon={LineChart}>
+        <AddAssets />
+      </PageHeader>
 
       {netWorthData === null || netWorthData?.length === 0 ? (
         <Alert type="error" className="max-w-[360px] mx-auto">

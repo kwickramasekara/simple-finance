@@ -12,11 +12,9 @@ export default async function Connections() {
 
   return (
     <main>
-      <PageHeader
-        title="Connections"
-        icon={Unplug}
-        children={user && <PlaidLink userId={user.$id} path="/connections" />}
-      />
+      <PageHeader title="Connections" icon={Unplug}>
+        {user && <PlaidLink userId={user.$id} path="/connections" />}
+      </PageHeader>
 
       {!connections ||
         (connections.length === 0 && (

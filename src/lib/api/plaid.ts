@@ -4,7 +4,7 @@ import { plaidClient } from "@/lib/plaid";
 import { getLogoUsingURL, parseStringify } from "@/lib/utils";
 import {
   getInstitutionConnectionData,
-  setInstitutionConnectionData,
+  addInstitutionConnectionData,
 } from "@/lib/api/db";
 import { CountryCode, CreditAccountSubtype, Products } from "plaid";
 import { revalidatePath } from "next/cache";
@@ -115,7 +115,7 @@ export const processConnection = async ({
           intitution_url: institutionData.institution.url || null,
         };
 
-        await setInstitutionConnectionData(dbData);
+        await addInstitutionConnectionData(dbData);
       }
     }
 

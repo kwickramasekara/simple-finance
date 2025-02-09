@@ -82,7 +82,7 @@ export async function addNetWorthAssets(
   }
 }
 
-export async function setInstitutionConnectionData(data: object) {
+export async function addInstitutionConnectionData(data: object) {
   try {
     const { database } = await createAdminClient();
 
@@ -98,10 +98,37 @@ export async function setInstitutionConnectionData(data: object) {
     };
   } catch (error) {
     console.error(
-      "Error (setInstitutionConnectionData):",
+      "Error (addInstitutionConnectionData):",
       (error as any)?.response?.message
     );
     return null;
+  }
+}
+
+export async function updateInstitutionConnectionData(
+  prevState: any,
+  data: FormData
+): Promise<{ error?: string; success?: boolean }> {
+  try {
+    const { database } = await createAdminClient();
+
+    await database.updateDocument(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!,
+      data.get("id") as string,
+      {
+        given_name: data.get("given_name"),
+        billing_cycle: Number(data.get("billing_cycle")),
+      }
+    );
+
+    revalidatePath("/connections");
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    return handleError(error);
   }
 }
 

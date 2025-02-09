@@ -112,6 +112,8 @@ export async function updateInstitutionConnectionData(
   try {
     const { database } = await createAdminClient();
 
+    if (!data.get("id")) throw new Error("ID is required");
+
     await database.updateDocument(
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!,
@@ -128,6 +130,32 @@ export async function updateInstitutionConnectionData(
       success: true,
     };
   } catch (error) {
+    return handleError(error);
+  }
+}
+
+export async function deleteInstitutionConnectionData(
+  prevState: any,
+  data: FormData
+): Promise<{ error?: string; success?: boolean }> {
+  try {
+    const { database } = await createAdminClient();
+
+    if (!data.get("id")) throw new Error("ID is required");
+
+    await database.deleteDocument(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!,
+      data.get("id") as string
+    );
+
+    revalidatePath("/connections");
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.log("Error (deleteInstitutionConnectionData):", error);
     return handleError(error);
   }
 }

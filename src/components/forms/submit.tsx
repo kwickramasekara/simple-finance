@@ -9,11 +9,8 @@ export default function Submit({ children }: { children: React.ReactNode }) {
 
   return (
     <Button type="submit" className="w-full" disabled={pending}>
-      <Loader
-        className="mr-2 h-4 w-4 animate-spin-slow"
-        visibility={pending ? "visible" : "hidden"}
-      ></Loader>
-      {children}
+      {pending ? <Loader className="mr-2 h-4 w-4 animate-spin-slow"></Loader>
+      : children}
     </Button>
   );
 }

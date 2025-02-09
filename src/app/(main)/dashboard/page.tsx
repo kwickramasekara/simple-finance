@@ -1,7 +1,10 @@
-export default function Dashboard() {
+import PageHeader from "@/components/main/page-header";
+import { LayoutDashboard } from "lucide-react";
+
+export default async function Dashboard() {
   return (
     <main>
-      <h1 className="text-xl font-semibold mt-1">Dashboard</h1>
+      <PageHeader title="Dashboard" icon={LayoutDashboard} />
     </main>
   );
 }

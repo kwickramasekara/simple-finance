@@ -5,7 +5,7 @@ import {
 } from "@/lib/api/account";
 import { useEffect, useState } from "react";
 import Alert from "@/components/common/alert";
-import Loading from "@/components/common/loading";
+import Loading from "@/components/main/loading";
 import { useFormState } from "react-dom";
 
 export default function MFARegerateCodesStepOne({

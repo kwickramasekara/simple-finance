@@ -107,6 +107,15 @@ input::-webkit-datetime-edit-year-field:focus {
     radial-gradient(160% 154% at 711px -303px, #03ff00ff 0%, #073affff 100%);
 }
 
+.pending-transaction {
+  filter: brightness(0.5);
+  color: theme("colors.muted.foreground");
+
+  .badge {
+    color: theme("colors.muted.foreground");
+  }
+}
+
 /* User nav position in desktop */
 @media (min-height: 768px) {
   .user-nav {

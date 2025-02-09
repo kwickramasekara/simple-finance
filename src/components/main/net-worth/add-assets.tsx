@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CirclePlus } from "lucide-react";
 import { addNetWorthAssets } from "@/lib/api/db";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormState } from "react-dom";
 import Submit from "@/components/forms/submit";
 import Alert from "@/components/common/alert";
 import { useState, ChangeEvent, useEffect } from "react";

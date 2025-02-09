@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import OTP from "@/components/forms/otp";
 import { useRouter } from "next/navigation";
-import Loading from "@/components/common/loading";
+import Loading from "@/components/main/loading";
 
 export default function MFAFlow({ recovery = false }: { recovery?: boolean }) {
   const router = useRouter();

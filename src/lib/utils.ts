@@ -167,3 +167,55 @@ export function handleError(error: any): APIResponse {
     };
   }
 }
+
+/**
+ * Fetches a logo from the given URL and returns it as a base64 encoded string.
+ *
+ * @param url - The URL of the logo to fetch.
+ * @returns A promise that resolves to the base64 encoded string of the logo if the fetch is successful, or null if the fetch fails.
+ */
+export async function getLogoUsingURL(url: string | null | undefined) {
+  if (!url) return null;
+
+  const domain = new URL(url).hostname;
+
+  const response = await fetch(
+    `https://icons.duckduckgo.com/ip3/${domain}.ico`
+  );
+
+  if (response.ok) {
+    const logo = await response.arrayBuffer();
+    return Buffer.from(logo).toString("base64");
+  }
+
+  return null;
+}
+
+/**
+ * Returns the ordinal suffix for a given day of the month.
+ *
+ * @param day - The day of the month (1-31).
+ * @returns The ordinal suffix ("st", "nd", "rd", "th") for the given day.
+ */
+export function getOrdinalSuffix(day: number): string {
+  if (day >= 11 && day <= 13) return "th";
+
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+}
+
+/**
+ * Parses and stringifies an object to remove any circular references.
+ *
+ * @param value - The object to parse and stringify.
+ * @returns The parsed and stringified object.
+ */
+export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));

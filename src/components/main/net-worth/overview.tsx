@@ -17,7 +17,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { cn, formatCurrency, getMonthlyNetWorthTotals } from "@/lib/utils";
-import { chartToolTipCurrency } from "@/components/common/chart-tooltip";
+import { chartToolTipCurrency } from "@/components/main/chart-tooltip";
 
 export default function Overview({
   data,

@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { SquareUserRound } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getAccount } from "@/lib/api/account";
-import Loading from "@/components/common/loading";
+import Loading from "@/components/main/loading";
 import { Switch } from "@/components/ui/switch";
 import MFARecoveryCodesDialog from "@/components/main/account/mfa/recovery-codes/dialog";
 import Alert from "@/components/common/alert";

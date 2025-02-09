@@ -39,7 +39,10 @@ export async function getNetWorthAssetsByYear(
 
     return filteredResult as NetWorthAssetsCollection[];
   } catch (error) {
-    console.error("Error:", (error as any)?.response?.message);
+    console.error(
+      "Error (getNetWorthAssetsByYear):",
+      (error as any)?.response?.message
+    );
     return null;
   }
 }
@@ -76,5 +79,103 @@ export async function addNetWorthAssets(
     };
   } catch (error) {
     return handleError(error);
+  }
+}
+
+export async function addInstitutionConnectionData(data: object) {
+  try {
+    const { database } = await createAdminClient();
+
+    await database.createDocument(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!,
+      ID.unique(),
+      data
+    );
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.error(
+      "Error (addInstitutionConnectionData):",
+      (error as any)?.response?.message
+    );
+    return null;
+  }
+}
+
+export async function updateInstitutionConnectionData(
+  prevState: any,
+  data: FormData
+): Promise<{ error?: string; success?: boolean }> {
+  try {
+    const { database } = await createAdminClient();
+
+    if (!data.get("id")) throw new Error("ID is required");
+
+    await database.updateDocument(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!,
+      data.get("id") as string,
+      {
+        given_name: data.get("given_name"),
+        billing_cycle: Number(data.get("billing_cycle")),
+      }
+    );
+
+    revalidatePath("/connections");
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    return handleError(error);
+  }
+}
+
+export async function deleteInstitutionConnectionData(
+  prevState: any,
+  data: FormData
+): Promise<{ error?: string; success?: boolean }> {
+  try {
+    const { database } = await createAdminClient();
+
+    if (!data.get("id")) throw new Error("ID is required");
+
+    await database.deleteDocument(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!,
+      data.get("id") as string
+    );
+
+    revalidatePath("/connections");
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.log("Error (deleteInstitutionConnectionData):", error);
+    return handleError(error);
+  }
+}
+
+export async function getInstitutionConnectionData() {
+  try {
+    const { database } = await createAdminClient();
+
+    const result = await database.listDocuments(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!,
+      [Query.limit(25)]
+    );
+
+    return result.documents;
+  } catch (error) {
+    console.error(
+      "Error (getInstitutionConnectionData):",
+      (error as any)?.response?.message
+    );
+    return null;
   }
 }

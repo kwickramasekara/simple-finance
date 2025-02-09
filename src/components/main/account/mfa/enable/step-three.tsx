@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { createMFARecoveryCodes } from "@/lib/api/account";
 import Alert from "@/components/common/alert";
-import Loading from "@/components/common/loading";
+import Loading from "@/components/main/loading";
 
 export default function MFAStepThree({
   stepper,

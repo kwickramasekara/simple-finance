@@ -112,7 +112,7 @@ export const processConnection = async ({
           institution_name: institutionData.institution.name || null,
           institution_color: institutionData.institution.primary_color || null,
           institution_logo: intitutionLogo || null,
-          intitution_url: institutionData.institution.url || null,
+          institution_url: institutionData.institution.url || null,
         };
 
         await addInstitutionConnectionData(dbData);

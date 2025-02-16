@@ -155,7 +155,6 @@ export async function deleteInstitutionConnectionData(
       success: true,
     };
   } catch (error) {
-    console.log("Error (deleteInstitutionConnectionData):", error);
     return handleError(error);
   }
 }

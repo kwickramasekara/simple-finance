@@ -8,6 +8,7 @@ import { Wallet } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Transaction } from "plaid";
 import CreditCard from "@/components/main/credit-card";
+import { getTotal } from "@/lib/utils/transactions";
 
 export default async function Expenses() {
   const txs = (await getTransactions()) || [];
@@ -17,14 +18,6 @@ export default async function Expenses() {
     })
     .flat()
     .sort(sortByDate);
-
-  const getTotal = (transactions: Transaction[]) => {
-    return transactions.reduce((acc, transaction) => {
-      return transaction.category?.[0]?.toLowerCase() === "payment"
-        ? acc
-        : acc + transaction.amount;
-    }, 0);
-  };
 
   const headerMarkup = (headerText: string, transactions: Transaction[]) => {
     return (

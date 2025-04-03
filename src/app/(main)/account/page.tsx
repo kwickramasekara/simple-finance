@@ -20,6 +20,7 @@ import MFARecoveryCodesDialog from "@/components/main/account/mfa/recovery-codes
 import Alert from "@/components/common/alert";
 import MFAEnableDialog from "@/components/main/account/mfa/enable/dialog";
 import MFADisableDialog from "@/components/main/account/mfa/disable/dialog";
+import PageHeader from "@/components/main/page-header";
 
 export default function Account() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -67,10 +68,8 @@ export default function Account() {
 
   return (
     <main>
-      <div className="flex mb-12">
-        <SquareUserRound className="mr-2" />
-        <h1 className="text-xl font-semibold">Account</h1>
-      </div>
+      <PageHeader title="Account" icon={SquareUserRound}></PageHeader>
+
       {error && <Alert type="error">{error}</Alert>}
 
       {loading && <Loading />}

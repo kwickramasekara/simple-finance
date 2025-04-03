@@ -4,6 +4,7 @@ import { ID, Query } from "node-appwrite";
 import { stripDbMetadata, removeCommonNulls, handleError } from "@/lib/utils";
 import { createAdminClient } from "@/lib/appwrite";
 import { revalidatePath } from "next/cache";
+import { validAssetVal } from "../utils/assets";
 
 export async function getNetWorthAssetsByYear(
   year?: string
@@ -59,7 +60,9 @@ export async function addNetWorthAssets(
         if (data.get("date") === "") throw new Error("Date is required");
         dataObj.date = new Date(value as string).toISOString();
       } else {
-        value !== "" ? (dataObj[key] = parseFloat(value as string)) : null;
+        validAssetVal(value as string)
+          ? (dataObj[key] = parseFloat(value as string))
+          : null;
       }
     });
 

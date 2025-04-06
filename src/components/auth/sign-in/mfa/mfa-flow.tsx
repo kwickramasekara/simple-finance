@@ -60,13 +60,13 @@ export default function MFAFlow({ recovery = false }: { recovery?: boolean }) {
             <input type="hidden" name="challengeId" value={challengeId} />
             <OTP recovery={recovery} />
           </form>
-          {state.error && <Alert type="error">{state.error}</Alert>}
+          {state.error && <Alert>{state.error}</Alert>}
         </>
       )}
 
       {isLoading && <Loading />}
 
-      {challengeError && <Alert type="error">{challengeError}</Alert>}
+      {challengeError && <Alert>{challengeError}</Alert>}
     </>
   );
 }

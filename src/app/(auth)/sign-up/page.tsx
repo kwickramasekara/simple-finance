@@ -44,7 +44,7 @@ export default function SignUp() {
             <Input name="password" type="password" minLength={8} required />
           </div>
           <Submit>Sign Up</Submit>
-          {state.error && <Alert type="error">{state.error}</Alert>}
+          {state.error && <Alert>{state.error}</Alert>}
         </div>
       </form>
       <div className="grid gap-4 text-sm text-muted-foreground">

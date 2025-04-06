@@ -68,7 +68,7 @@ export default function MFEnableDialog({
         </DialogHeader>
         {error && (
           <>
-            <Alert type="error">{error}</Alert>
+            <Alert>{error}</Alert>
             <DialogFooter className="mt-2">
               <DialogClose asChild>
                 <Button>Close</Button>

@@ -34,7 +34,7 @@ export default function MFAStepTwo({
         <form action={formAction}>
           <OTP />
         </form>
-        {state.error && <Alert type="error">{state.error}</Alert>}
+        {state.error && <Alert>{state.error}</Alert>}
       </div>
       <DialogFooter className="mt-2">
         <Button variant="ghost" onClick={() => stepper(1)}>

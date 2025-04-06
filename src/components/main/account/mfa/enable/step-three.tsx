@@ -31,7 +31,7 @@ export default function MFAStepThree({
 
   return (
     <>
-      {error && <Alert type="error">{error}</Alert>}
+      {error && <Alert>{error}</Alert>}
 
       {isLoading && <Loading />}
 

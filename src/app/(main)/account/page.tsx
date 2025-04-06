@@ -70,7 +70,7 @@ export default function Account() {
     <main>
       <PageHeader title="Account" icon={SquareUserRound}></PageHeader>
 
-      {error && <Alert type="error">{error}</Alert>}
+      {error && <Alert>{error}</Alert>}
 
       {loading && <Loading />}
 

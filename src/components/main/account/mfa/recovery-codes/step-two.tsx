@@ -25,7 +25,7 @@ export default function MFARegerateCodesStepTwo() {
 
   return (
     <>
-      {error && <Alert type="error">{error}</Alert>}
+      {error && <Alert>{error}</Alert>}
 
       {isLoading && <Loading />}
 

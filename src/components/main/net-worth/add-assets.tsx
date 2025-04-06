@@ -159,9 +159,7 @@ export default function AddAssets() {
 
           <DialogFooter className="flex flex-col gap-2 w-full sm:flex-col sm:justify-normal sm:space-x-0">
             {state?.error && (
-              <Alert type="error" className="max-w-full block">
-                {state.error}
-              </Alert>
+              <Alert className="max-w-full block">{state.error}</Alert>
             )}
 
             <Submit>Save changes</Submit>

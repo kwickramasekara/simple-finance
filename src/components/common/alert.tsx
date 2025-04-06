@@ -14,11 +14,11 @@ const types = {
 
 export default function CustomAlert({
   children,
-  type,
+  type = "error",
   className,
 }: {
   children: React.ReactNode;
-  type: keyof typeof types;
+  type?: keyof typeof types;
   className?: string;
 }) {
   return (

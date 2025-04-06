@@ -19,3 +19,13 @@ declare type APIResponse = {
   error?: string;
   success?: any;
 };
+
+declare type RetirementData = {
+  [key: string]: any;
+  total_balance_goal_short_term?: number;
+  total_balance_goal_long_term?: number;
+  hsa_balance_goal_short_term?: number;
+  hsa_balance_goal_long_term?: number;
+  retirement_assets?: string[];
+  hsa_assets?: string[];
+};

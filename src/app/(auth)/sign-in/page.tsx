@@ -52,9 +52,7 @@ export default function SignIn() {
             </div>
             <Submit>Sign In</Submit>
             {state.error && state.error !== MFA_ERROR && (
-              <Alert type="error" className="max-w-[360px]">
-                {state.error}
-              </Alert>
+              <Alert className="max-w-[360px]">{state.error}</Alert>
             )}
           </div>
         </form>

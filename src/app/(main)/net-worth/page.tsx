@@ -18,9 +18,7 @@ export default async function NetWorth() {
       </PageHeader>
 
       {netWorthData === null || netWorthData?.length === 0 ? (
-        <Alert type="error" className="max-w-[360px] mx-auto">
-          No data available.
-        </Alert>
+        <Alert className="max-w-[360px] mx-auto">No data available.</Alert>
       ) : (
         <div className="flex flex-col gap-12">
           <Overview data={netWorthData} />

@@ -4,6 +4,47 @@ import { ID, Query } from "node-appwrite";
 import { stripDbMetadata, removeCommonNulls, handleError } from "@/lib/utils";
 import { createAdminClient } from "@/lib/appwrite";
 import { revalidatePath } from "next/cache";
+import { validAssetVal } from "../utils/assets";
+
+export async function getLatestNetWorthAssets(): Promise<NetWorthAssetsCollection | null> {
+  try {
+    const { database } = await createAdminClient();
+
+    const result = await database.listDocuments(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_NETWORTH_ASSETS_COLLECTION_ID!,
+      [Query.orderDesc("date"), Query.limit(1), Query.offset(0)]
+    );
+
+    return stripDbMetadata(result.documents[0]) as NetWorthAssetsCollection;
+  } catch (error) {
+    console.error(
+      "Error (getLatestNetWorthAssets):",
+      (error as any)?.response?.message
+    );
+    return null;
+  }
+}
+
+export async function getRetirementData(): Promise<RetirementData | null> {
+  try {
+    const { database } = await createAdminClient();
+
+    const result = await database.listDocuments(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_RETIREMENT_COLLECTION_ID!,
+      [Query.limit(1)]
+    );
+
+    return stripDbMetadata(result.documents[0]) as RetirementData;
+  } catch (error) {
+    console.error(
+      "Error (getRetirementData):",
+      (error as any)?.response?.message
+    );
+    return null;
+  }
+}
 
 export async function getNetWorthAssetsByYear(
   year?: string
@@ -59,7 +100,9 @@ export async function addNetWorthAssets(
         if (data.get("date") === "") throw new Error("Date is required");
         dataObj.date = new Date(value as string).toISOString();
       } else {
-        value !== "" ? (dataObj[key] = parseFloat(value as string)) : null;
+        validAssetVal(value as string)
+          ? (dataObj[key] = parseFloat(value as string))
+          : null;
       }
     });
 

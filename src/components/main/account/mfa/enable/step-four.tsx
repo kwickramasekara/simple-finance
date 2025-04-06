@@ -34,7 +34,7 @@ export default function MFAStepFour({
 
   return (
     <>
-      {error && <Alert type="error">{error}</Alert>}
+      {error && <Alert>{error}</Alert>}
 
       {isLoading && <Loading />}
 

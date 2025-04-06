@@ -70,7 +70,7 @@ export default function MFADisableDialog({
           <DialogTitle>Multi-factor authentication</DialogTitle>
         </DialogHeader>
         <>
-          {challengeError && <Alert type="error">{challengeError}</Alert>}
+          {challengeError && <Alert>{challengeError}</Alert>}
 
           {isLoading && <Loading />}
 
@@ -85,7 +85,7 @@ export default function MFADisableDialog({
                 <input type="hidden" name="path" value="/account" />
                 <OTP />
               </form>
-              {state.error && <Alert type="error">{state.error}</Alert>}
+              {state.error && <Alert>{state.error}</Alert>}
             </>
           )}
 

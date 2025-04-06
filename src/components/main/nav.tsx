@@ -9,6 +9,7 @@ import {
   Menu,
   LayoutDashboard,
   LineChart,
+  PiggyBank,
   Unplug,
   Wallet,
 } from "lucide-react";
@@ -53,6 +54,11 @@ function NavLinks({
       href: "/net-worth",
       icon: LineChart,
       label: "Net Worth",
+    },
+    {
+      href: "/retirement",
+      icon: PiggyBank,
+      label: "Retirement",
     },
   ];
 

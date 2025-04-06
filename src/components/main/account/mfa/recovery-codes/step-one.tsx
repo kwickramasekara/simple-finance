@@ -46,7 +46,7 @@ export default function MFARegerateCodesStepOne({
 
   return (
     <>
-      {challengeError && <Alert type="error">{challengeError}</Alert>}
+      {challengeError && <Alert>{challengeError}</Alert>}
 
       {isLoading && <Loading />}
 
@@ -59,7 +59,7 @@ export default function MFARegerateCodesStepOne({
             <input type="hidden" name="challengeId" value={challengeId} />
             <OTP />
           </form>
-          {state.error && <Alert type="error">{state.error}</Alert>}
+          {state.error && <Alert>{state.error}</Alert>}
         </>
       )}
     </>

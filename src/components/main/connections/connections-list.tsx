@@ -169,9 +169,7 @@ export default function ConnectionsList({
 
             <DialogFooter className="flex flex-col gap-2 w-full sm:flex-col sm:justify-normal sm:space-x-0">
               {updateState?.error && (
-                <Alert type="error" className="max-w-full block">
-                  {updateState.error}
-                </Alert>
+                <Alert className="max-w-full block">{updateState.error}</Alert>
               )}
 
               <Submit>Save changes</Submit>
@@ -193,9 +191,7 @@ export default function ConnectionsList({
             </div>
             <DialogFooter className="flex flex-col gap-4 w-full sm:flex-col sm:justify-normal sm:space-x-0">
               {deleteState?.error && (
-                <Alert type="error" className="max-w-full block">
-                  {deleteState.error}
-                </Alert>
+                <Alert className="max-w-full block">{deleteState.error}</Alert>
               )}
 
               <div className="grid grid-row grid-cols-2 gap-4">

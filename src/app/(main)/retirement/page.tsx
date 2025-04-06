@@ -15,7 +15,7 @@ export default async function Retirement() {
   const netWorthData = await getLatestNetWorthAssets();
   const retirementData = await getRetirementData();
 
-  if (!netWorthData) {
+  if (!netWorthData || !retirementData) {
     return <Alert className="max-w-[360px] mx-auto">No data available.</Alert>;
   }
 

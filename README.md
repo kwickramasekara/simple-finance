@@ -4,7 +4,7 @@ The home for your personal finance.
 
 ## Database sync
 
-Use Appwrite CLI sync database documents. Requires `appwrite-cli` and `jq`.
+Use Appwrite CLI to sync database documents. Requires `appwrite-cli` and `jq`.
 
 1. `brew install jq`
 2. `npm install appwrite-cli`

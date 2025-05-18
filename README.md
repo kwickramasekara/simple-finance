@@ -1,6 +1,6 @@
 # Simple Finance
 
-The home of your personal finance.
+The home for your personal finance.
 
 ## Database sync
 

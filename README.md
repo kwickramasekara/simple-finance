@@ -2,6 +2,8 @@
 
 The home for your personal finance.
 
+![Product image](https://ucarecdn.com/d89372cc-5216-491b-b8f4-f4245e560138/-/preview/1000x729/-/format/auto/)
+
 ## Database sync
 
 Use Appwrite CLI to sync database documents. Requires `appwrite-cli` and `jq`.

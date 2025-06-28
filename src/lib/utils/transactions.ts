@@ -19,9 +19,6 @@ const isCCPayment = (transaction: Transaction) => {
  */
 export const getTotal = (transactions: Transaction[]) => {
   return transactions.reduce((acc, transaction) => {
-    if (isCCPayment(transaction)) {
-      console.log(transaction);
-    }
     return isCCPayment(transaction) ? acc : acc + transaction.amount;
   }, 0);
 };

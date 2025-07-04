@@ -115,11 +115,3 @@ input::-webkit-datetime-edit-year-field:focus {
     color: theme("colors.muted.foreground");
   }
 }
-
-/* User nav position in desktop */
-@media (min-height: 768px) {
-  .user-nav {
-    position: fixed;
-    bottom: 0;
-  }
-}

@@ -90,7 +90,7 @@ function UserNav({
   setDrawerOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   return (
-    <div className="w-full p-12 user-nav">
+    <div className="w-full p-12 lg:fixed lg:bottom-0">
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <div className="flex items-center gap-2 cursor-pointer text-muted-foreground hover:text-foreground">

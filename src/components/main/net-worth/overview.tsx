@@ -1,6 +1,6 @@
 "use client";
 
-import { Area, AreaChart, XAxis } from "recharts";
+import { Area, AreaChart, XAxis, YAxis } from "recharts";
 import {
   Card,
   CardContent,
@@ -39,6 +39,7 @@ export default function Overview({
     },
   } satisfies ChartConfig;
   const chartData = monthlyTotals;
+  const monthlyMin = Math.min(...monthlyTotals.map((obj) => obj.total));
 
   return (
     <Card>
@@ -94,6 +95,13 @@ export default function Overview({
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
+            <YAxis
+              type="number"
+              domain={[monthlyMin, "dataMax"]}
+              allowDataOverflow={true}
+              padding={{ top: 0, bottom: 20 }}
+              hide
+            />
             <ChartTooltip
               cursor={true}
               content={
@@ -115,12 +123,12 @@ export default function Overview({
                 <stop
                   offset="5%"
                   stopColor="var(--color-data)"
-                  stopOpacity={0.8}
+                  stopOpacity={0.5}
                 />
                 <stop
-                  offset="95%"
+                  offset="100%"
                   stopColor="var(--color-data)"
-                  stopOpacity={0.1}
+                  stopOpacity={0}
                 />
               </linearGradient>
             </defs>

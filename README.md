@@ -2,7 +2,7 @@
 
 The home for your personal finance.
 
-![Product image](https://ucarecdn.com/d89372cc-5216-491b-b8f4-f4245e560138/-/preview/1000x729/-/format/auto/)
+![Product image](https://ucarecdn.com/aa820895-0e75-48b1-aba3-2a5af00a8c46/-/preview/1000x729/-/format/auto/)
 
 ## Database sync
 

@@ -13,6 +13,7 @@ declare type NetWorthAssetsCollection = {
   realEstate?: null;
   other?: null;
   $id?: string;
+  $sequence: string;
 };
 
 declare type APIResponse = {

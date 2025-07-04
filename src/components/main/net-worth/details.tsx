@@ -14,6 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn, formatCurrency, getMonth } from "@/lib/utils";
+import { cleanDBMetadata } from "@/lib/utils/data";
 import assetsMap from "@/lib/maps/assets";
 
 export default function Details({
@@ -21,6 +22,8 @@ export default function Details({
 }: {
   data: NetWorthAssetsCollection[] | null;
 }) {
+  data = data ? (cleanDBMetadata(data) as NetWorthAssetsCollection[]) : null;
+
   return (
     <Card>
       <CardHeader>
@@ -48,23 +51,20 @@ export default function Details({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((item: NetWorthAssetsCollection) => (
-                <TableRow key={item["$id"]}>
-                  {Object.keys(item).map(
-                    (key, index) =>
-                      key !== "$id" && (
-                        <TableCell
-                          key={key}
-                          className={cn("font-mono", index > 0 && "text-right")}
-                        >
-                          {index === 0
-                            ? getMonth(item[key], true)
-                            : item[key] === null
-                            ? "-"
-                            : formatCurrency(item[key])}
-                        </TableCell>
-                      )
-                  )}
+              {data.map((item: NetWorthAssetsCollection, index) => (
+                <TableRow key={index}>
+                  {Object.keys(item).map((key, index) => (
+                    <TableCell
+                      key={key}
+                      className={cn("font-mono", index > 0 && "text-right")}
+                    >
+                      {index === 0
+                        ? getMonth(item[key], true)
+                        : item[key] === null
+                        ? "-"
+                        : formatCurrency(item[key])}
+                    </TableCell>
+                  ))}
                 </TableRow>
               ))}
             </TableBody>

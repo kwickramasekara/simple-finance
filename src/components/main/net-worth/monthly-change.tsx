@@ -1,6 +1,14 @@
 "use client";
 
-import { Bar, BarChart, CartesianGrid, Cell, LabelList, XAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  LabelList,
+  XAxis,
+  YAxis,
+} from "recharts";
 import {
   Card,
   CardContent,
@@ -102,6 +110,7 @@ export default function MonthlyChange({
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />
+            <YAxis padding={{ bottom: 20 }} hide />
             <Bar dataKey="difference" radius={5}>
               <LabelList
                 position="top"

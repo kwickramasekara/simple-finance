@@ -34,7 +34,7 @@ export default function Assets({ data }: { data: NetWorthAssetsCollection[] }) {
   } satisfies ChartConfig;
 
   Object.entries(latestData).forEach(([key, value], index) => {
-    if (key === "$id" || key === "date") return;
+    if (key.startsWith("$") || key === "date" || value === null) return;
     chartConfig[key] = {
       label: assetsMap[key] ?? key,
       color: `hsl(var(--chart-${index}))`,

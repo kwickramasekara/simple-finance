@@ -177,15 +177,17 @@ export default function Nav({
 
       {/* Desktop nav  */}
       <div className="hidden lg:flex flex-col min-w-72 border-r bg-neutral-950">
-        <div className="px-12 pt-12 w-full inline-flex gap-2 items-center">
-          <Logo size="sm" />
-          <h1 className="text-xl font-semibold">Simple Finance</h1>
-        </div>
+        <div className="fixed">
+          <div className="px-12 pt-12 w-full inline-flex gap-2 items-center">
+            <Logo size="sm" />
+            <h1 className="text-xl font-semibold">Simple Finance</h1>
+          </div>
 
-        <div className="flex flex-col h-full justify-between">
-          <NavLinks />
+          <div className="flex flex-col h-full justify-between">
+            <NavLinks />
 
-          <UserNav user={user} />
+            <UserNav user={user} />
+          </div>
         </div>
       </div>
     </>

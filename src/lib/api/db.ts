@@ -1,7 +1,12 @@
 "use server";
 
 import { ID, Query } from "node-appwrite";
-import { stripDbMetadata, removeCommonNulls, handleError } from "@/lib/utils";
+import {
+  stripDbMetadata,
+  removeCommonNulls,
+  handleError,
+  extractYearsFromDocuments,
+} from "@/lib/utils";
 import { createAdminClient } from "@/lib/appwrite";
 import { revalidatePath } from "next/cache";
 import { validAssetVal } from "../utils/assets";
@@ -43,6 +48,26 @@ export async function getRetirementData(): Promise<RetirementData | null> {
       (error as any)?.response?.message
     );
     return null;
+  }
+}
+
+export async function getAvailableNetWorthYears(): Promise<string[]> {
+  try {
+    const { database } = await createAdminClient();
+
+    const result = await database.listDocuments(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_NETWORTH_ASSETS_COLLECTION_ID!,
+      [Query.orderDesc("date"), Query.limit(1200)] // 100 years worth entries
+    );
+
+    return extractYearsFromDocuments(result.documents);
+  } catch (error) {
+    console.error(
+      "Error (getAvailableNetWorthYears):",
+      (error as any)?.response?.message
+    );
+    return [];
   }
 }
 

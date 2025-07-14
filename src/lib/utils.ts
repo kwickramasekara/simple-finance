@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import { Models } from "node-appwrite";
 import { twMerge } from "tailwind-merge";
 
 /**
@@ -210,6 +211,26 @@ export function getOrdinalSuffix(day: number): string {
     default:
       return "th";
   }
+}
+
+/**
+ * Extracts unique years from an array of documents with date properties.
+ * Returns years sorted in descending order (newest first).
+ *
+ * @param documents - Array of documents containing date properties.
+ * @returns Array of year strings sorted in descending order.
+ */
+export function extractYearsFromDocuments(
+  documents: Models.Document[]
+): string[] {
+  const years = new Set<string>();
+
+  documents.forEach((doc) => {
+    const date = new Date(doc.date);
+    years.add(date.getFullYear().toString());
+  });
+
+  return Array.from(years).sort((a, b) => parseInt(b) - parseInt(a));
 }
 
 /**

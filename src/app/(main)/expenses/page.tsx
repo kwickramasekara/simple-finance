@@ -4,15 +4,27 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { sortByDate } from "@/lib/utils/dates";
 import PageHeader from "@/components/main/page-header";
-import { Wallet } from "lucide-react";
+import { Wallet, AlertCircle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Transaction } from "plaid";
 import CreditCard from "@/components/main/credit-card";
 import { getTotal } from "@/lib/utils/transactions";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default async function Expenses() {
   const txs = (await getTransactions()) || [];
-  const allTxs = txs
+
+  // Check for accounts that need reconnection
+  const accountsNeedingReconnection = txs.filter(
+    (tx) => tx.error === "ITEM_LOGIN_REQUIRED"
+  );
+
+  // Filter out errored transactions for display
+  const validTxs = txs.filter((tx) => !tx.error);
+
+  const allTxs = validTxs
     ?.map((obj) => {
       return obj.transactions;
     })
@@ -101,11 +113,34 @@ export default async function Expenses() {
     <main>
       <PageHeader title="Expenses" icon={Wallet} />
 
-      {txs && (
+      {accountsNeedingReconnection.length > 0 && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Connection Required</AlertTitle>
+          <AlertDescription className="flex items-center justify-between">
+            <span>
+              One or more of your bank connections need to be updated. Please go
+              to the Connections page to reconnect your accounts.
+            </span>
+            <Link href="/connections">
+              <Button variant="outline" size="sm">
+                Go to Connections
+              </Button>
+            </Link>
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {validTxs && validTxs.length > 0 && (
         <Tabs defaultValue="all">
-          <TabsList className={cn("grid w-full gap-2", `grid-cols-6`)}>
+          <TabsList
+            className={cn(
+              "grid w-full gap-2",
+              `grid-cols-${Math.min(validTxs.length + 1, 6)}`
+            )}
+          >
             <TabsTrigger value="all">All</TabsTrigger>
-            {txs?.map(({ account }) => (
+            {validTxs?.map(({ account }) => (
               <TabsTrigger key={account.id} value={account.id}>
                 <CreditCard
                   mask={account.mask}
@@ -121,7 +156,7 @@ export default async function Expenses() {
               {transactionsMarkup(allTxs)}
             </div>
           </TabsContent>
-          {txs?.map(({ account, transactions }) => (
+          {validTxs?.map(({ account, transactions }) => (
             <TabsContent key={account.id} value={account.id}>
               <div className="grid grid-cols-1 gap-2">
                 {headerMarkup(
@@ -133,6 +168,12 @@ export default async function Expenses() {
             </TabsContent>
           ))}
         </Tabs>
+      )}
+
+      {validTxs.length === 0 && accountsNeedingReconnection.length === 0 && (
+        <div className="text-center text-muted-foreground mt-8">
+          No transactions found. Please add a bank connection.
+        </div>
       )}
     </main>
   );

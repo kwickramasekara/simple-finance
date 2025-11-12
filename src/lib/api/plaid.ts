@@ -51,9 +51,11 @@ const getInstitutionData = async (institutionId: string) => {
   }
 };
 
-export const createLinkToken = async (userId: string) => {
+export const createLinkToken = async (userId: string, accessToken?: string) => {
   try {
     const tokenParams = {
+      // update mode: include access token if provided
+      ...(accessToken ? { access_token: accessToken } : {}),
       user: {
         client_user_id: userId,
       },
@@ -133,31 +135,57 @@ export const getTransactions = async () => {
   try {
     const allTransactions = await Promise.all(
       connections.map(async (connection) => {
-        const billingDates = getBillingDates(connection.billing_cycle);
-        const transactions = await plaidClient.transactionsGet({
-          access_token: connection.access_token,
-          start_date: billingDates.startDate,
-          end_date: billingDates.endDate,
-        });
+        try {
+          const billingDates = getBillingDates(connection.billing_cycle);
+          const transactions = await plaidClient.transactionsGet({
+            access_token: connection.access_token,
+            start_date: billingDates.startDate,
+            end_date: billingDates.endDate,
+          });
 
-        return {
-          account: {
-            id: connection.account_id,
-            givenName: connection.given_name,
-            officialName: connection.official_name,
-            name: connection.name,
-            mask: connection.mask,
-            institutionColor: connection.institution_color,
-            institutionLogo: connection.institution_logo,
-            billingCycle: connection.billing_cycle,
-          },
-          transactions: transactions.data.transactions,
-        };
+          return {
+            account: {
+              id: connection.account_id,
+              givenName: connection.given_name,
+              officialName: connection.official_name,
+              name: connection.name,
+              mask: connection.mask,
+              institutionColor: connection.institution_color,
+              institutionLogo: connection.institution_logo,
+              billingCycle: connection.billing_cycle,
+            },
+            transactions: transactions.data.transactions,
+            error: null,
+          };
+        } catch (error: any) {
+          // Handle Plaid errors for individual connections
+          const errorCode = error?.response?.data?.error_code;
+          console.error(
+            `Error getting transactions for ${connection.name} [${connection.account_id}]:`,
+            errorCode || error.message
+          );
+
+          return {
+            account: {
+              id: connection.account_id,
+              givenName: connection.given_name,
+              officialName: connection.official_name,
+              name: connection.name,
+              mask: connection.mask,
+              institutionColor: connection.institution_color,
+              institutionLogo: connection.institution_logo,
+              billingCycle: connection.billing_cycle,
+            },
+            transactions: [],
+            error: errorCode || "UNKNOWN_ERROR",
+          };
+        }
       })
     );
 
     return allTransactions;
   } catch (error) {
     console.error("Error (getTransactions):", error);
+    return [];
   }
 };

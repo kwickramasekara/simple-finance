@@ -39,7 +39,7 @@ const PlaidLink = ({ userId, path }: { userId: string; path: string }) => {
 
       setProcessing(false);
     },
-    [userId]
+    [path, router]
   );
 
   const config: PlaidLinkOptions = {

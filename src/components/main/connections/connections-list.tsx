@@ -87,16 +87,14 @@ export default function ConnectionsList({
   useEffect(() => {
     if (updateState.success === true) {
       setEditDialogOpen(false);
-      updateState.success = false;
     }
-  }, [updateState.success]); // Dependency array ensures this runs only when state.success changes
+  }, [updateState.success]);
 
   useEffect(() => {
     if (deleteState.success === true) {
       setDeleteDialogOpen(false);
-      deleteState.success = false;
     }
-  }, [deleteState.success]); // Dependency array ensures this runs only when deleteState.success changes
+  }, [deleteState.success]);
 
   const getConnectionStatus = (connectionId: string) => {
     return connectionStatuses[connectionId] || { checking: true, error: null };

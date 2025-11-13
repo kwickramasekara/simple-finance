@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import CreditCard from "@/components/main/credit-card";
 import { getOrdinalSuffix } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Trash, Pencil } from "lucide-react";
+import { Trash, Pencil, AlertCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -25,11 +25,20 @@ import {
 } from "@/lib/api/db";
 import Alert from "@/components/common/alert";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { checkConnectionStatus } from "@/lib/api/plaid";
+import PlaidRelink from "./plaid-relink";
+
+type ConnectionStatus = {
+  checking: boolean;
+  error: string | null;
+};
 
 export default function ConnectionsList({
   data,
+  userId,
 }: {
   data: Models.Document[] | null;
+  userId: string;
 }) {
   const updateInitialState = {
     error: "",
@@ -50,6 +59,29 @@ export default function ConnectionsList({
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [currentConnection, setCurrentConnection] = useState(data && data[0]);
+  const [connectionStatuses, setConnectionStatuses] = useState<
+    Record<string, ConnectionStatus>
+  >({});
+  const [reconnectingConnection, setReconnectingConnection] = useState<
+    string | null
+  >(null);
+
+  // Check each connection status individually on mount
+  useEffect(() => {
+    if (!data) return;
+
+    // Check each connection independently
+    data.forEach(async (connection) => {
+      const result = await checkConnectionStatus(connection.access_token);
+      setConnectionStatuses((prev) => ({
+        ...prev,
+        [connection.$id]: {
+          checking: false,
+          error: result.error,
+        },
+      }));
+    });
+  }, [data]);
 
   // Subscribe to changes in the success field
   useEffect(() => {
@@ -66,11 +98,22 @@ export default function ConnectionsList({
     }
   }, [deleteState.success]); // Dependency array ensures this runs only when deleteState.success changes
 
+  const getConnectionStatus = (connectionId: string) => {
+    return connectionStatuses[connectionId] || { checking: true, error: null };
+  };
+
   return (
     <div className="flex flex-col gap-4">
-      {data &&
-        data.map((connection) => (
-          <Card key={connection.$id}>
+      {data?.map((connection) => {
+        const status = getConnectionStatus(connection.$id);
+        const cardClassName = status.error
+          ? "border-amber-500 transition-opacity duration-500"
+          : status.checking
+          ? "opacity-25 pointer-events-none transition-opacity duration-500"
+          : "transition-opacity duration-500";
+
+        return (
+          <Card key={connection.$id} className={cardClassName}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between gap-4">
                 <div className="flex w-1/2 items-center space-x-4">
@@ -103,6 +146,13 @@ export default function ConnectionsList({
                 </div>
 
                 <div className="flex w-1/4 gap-4 justify-end">
+                  <PlaidRelink
+                    connection={connection}
+                    userId={userId}
+                    connectionStatus={status}
+                    reconnectingConnection={reconnectingConnection}
+                    setReconnectingConnection={setReconnectingConnection}
+                  />
                   <Button
                     variant="outline"
                     size="icon"
@@ -125,9 +175,28 @@ export default function ConnectionsList({
                   </Button>
                 </div>
               </div>
+              {status.error && (
+                <div className="mt-4 p-3 bg-amber-950/25 rounded-md flex items-start gap-2">
+                  <AlertCircle
+                    size={16}
+                    className="text-amber-500 mt-0.5 flex-shrink-0"
+                  />
+                  <div className="flex-1">
+                    <p className="text-sm text-amber-500 font-medium">
+                      Connection Issue
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {status.error === "ITEM_LOGIN_REQUIRED"
+                        ? "Your login credentials have changed or expired. Please reconnect this account."
+                        : "There was an error connecting to this account. Please try reconnecting."}
+                    </p>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
-        ))}
+        );
+      })}
 
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">

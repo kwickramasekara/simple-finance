@@ -1,5 +1,5 @@
 import { Unplug } from "lucide-react";
-import PlaidLink from "@/components/main/plaid-link";
+import PlaidLink from "@/components/main/connections/plaid-link";
 import { getSignedInUser } from "@/lib/appwrite";
 import { getInstitutionConnectionData } from "@/lib/api/db";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -27,7 +27,9 @@ export default async function Connections() {
           </Alert>
         ))}
 
-      {connections && <ConnectionsList data={connections} />}
+      {connections && user && (
+        <ConnectionsList data={connections} userId={user.$id} />
+      )}
     </main>
   );
 }

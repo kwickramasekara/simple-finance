@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Transaction } from "plaid";
 import CreditCard from "@/components/main/credit-card";
 import { getTotal } from "@/lib/utils/transactions";
+import Alert from "@/components/common/alert";
 
 export default async function Expenses() {
   const txs = (await getTransactions()) || [];
@@ -101,7 +102,13 @@ export default async function Expenses() {
     <main>
       <PageHeader title="Expenses" icon={Wallet} />
 
-      {txs && (
+      {txs.length === 0 && (
+        <Alert type="warning">
+          No transactions found. Please verify your account connections.
+        </Alert>
+      )}
+
+      {txs?.length > 0 && (
         <Tabs defaultValue="all">
           <TabsList className={cn("grid w-full gap-2", `grid-cols-6`)}>
             <TabsTrigger value="all">All</TabsTrigger>

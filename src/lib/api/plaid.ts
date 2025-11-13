@@ -10,6 +10,10 @@ import { CountryCode, CreditAccountSubtype, Products } from "plaid";
 import { revalidatePath } from "next/cache";
 import { getBillingDates } from "@/lib/utils/dates";
 
+const APP_NAME = "Simple Finance";
+const APP_LANG = "en";
+const APP_REGION = "US";
+
 const getAccessToken = async (publicToken: string) => {
   try {
     // Exchange public token for access token
@@ -62,10 +66,10 @@ export const createLinkToken = async (userId: string) => {
           account_subtypes: ["credit card"] as CreditAccountSubtype[],
         },
       },
-      client_name: "Simple Finance",
+      client_name: APP_NAME,
+      language: APP_LANG,
+      country_codes: [APP_REGION] as CountryCode[],
       products: ["transactions"] as Products[],
-      language: "en",
-      country_codes: ["US"] as CountryCode[],
       redirect_uri: process.env.PLAID_REDIRECT_URI,
     };
 
@@ -74,6 +78,29 @@ export const createLinkToken = async (userId: string) => {
     return parseStringify({ linkToken: response.data.link_token });
   } catch (error) {
     console.error("Error (createLinkToken):", error);
+  }
+};
+
+export const createUpdateLinkToken = async (
+  userId: string,
+  accessToken: string
+) => {
+  try {
+    const tokenParams = {
+      user: {
+        client_user_id: userId,
+      },
+      client_name: APP_NAME,
+      language: APP_LANG,
+      country_codes: [APP_REGION] as CountryCode[],
+      access_token: accessToken,
+    };
+
+    const response = await plaidClient.linkTokenCreate(tokenParams);
+
+    return parseStringify({ linkToken: response.data.link_token });
+  } catch (error) {
+    console.error("Error (createUpdateLinkToken):", error);
   }
 };
 
@@ -122,6 +149,19 @@ export const processConnection = async ({
     revalidatePath("/connections");
   } catch (error) {
     console.error("Error (processConnection):", error);
+  }
+};
+
+export const checkConnectionStatus = async (accessToken: string) => {
+  try {
+    await plaidClient.accountsGet({
+      access_token: accessToken,
+    });
+
+    return { error: null };
+  } catch (error: any) {
+    const errorCode = error?.response?.data?.error_code;
+    return { error: errorCode || "UNKNOWN_ERROR" };
   }
 };
 

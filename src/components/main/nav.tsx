@@ -177,7 +177,7 @@ export default function Nav({
 
       {/* Desktop nav  */}
       <div className="hidden lg:flex flex-col min-w-72 border-r bg-neutral-950">
-        <div className="fixed w-72 h-screen flex flex-col">
+        <div className="fixed w-72 h-dvh flex flex-col">
           <div className="p-12 w-full inline-flex gap-2 items-center flex-shrink-0">
             <Logo size="sm" />
             <h1 className="text-xl font-semibold">Simple Finance</h1>

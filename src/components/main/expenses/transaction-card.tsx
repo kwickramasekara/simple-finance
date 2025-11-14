@@ -32,7 +32,7 @@ export default function TransactionCard({
         <Accordion type="single" collapsible>
           <AccordionItem value="transaction" className="border-b-0">
             <AccordionTrigger className="p-4 hover:no-underline">
-              <div className="flex items-center justify-between w-full pr-4">
+              <div className="flex items-center justify-between gap-x-4 w-full pr-4">
                 <div className="flex items-center space-x-4 w-1/2">
                   <div className="w-10 h-10 flex-shrink-0">
                     <img
@@ -48,7 +48,7 @@ export default function TransactionCard({
                   </div>
                   <div className="text-left">
                     <p
-                      className="font-medium truncate w-36 md:w-72 xl:w-96"
+                      className="font-medium truncate w-36 md:w-64 xl:w-96"
                       title={transaction.name}
                     >
                       {transaction.merchant_name || transaction.name}
@@ -85,8 +85,8 @@ export default function TransactionCard({
                 </div>
               </div>
             </AccordionTrigger>
-            <AccordionContent className="px-4 pb-4">
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-x-8 gap-y-4 pt-2 font-medium">
+            <AccordionContent className="p-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:flex gap-x-8 gap-y-4 xl:justify-between font-medium">
                 <div>
                   <p className="text-muted-foreground">Card Name</p>
                   <p>{displayAccountName || "N/A"}</p>

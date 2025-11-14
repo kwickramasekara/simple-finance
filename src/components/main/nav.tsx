@@ -63,7 +63,7 @@ function NavLinks({
   ];
 
   return (
-    <nav className="w-full p-12 flex flex-col gap-6">
+    <nav className="w-full p-12 lg:pt-0 flex flex-col gap-6">
       {links.map(({ href, icon, label }) => (
         <Link
           key={label}
@@ -90,7 +90,7 @@ function UserNav({
   setDrawerOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   return (
-    <div className="w-full p-12 lg:fixed lg:bottom-0">
+    <div className="w-full p-12">
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <div className="flex items-center gap-2 cursor-pointer text-muted-foreground hover:text-foreground">
@@ -107,7 +107,7 @@ function UserNav({
             </div>
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="min-w-48">
+        <DropdownMenuContent align="start" side="top" className="min-w-48">
           <Link
             href="/account"
             onClick={() => setDrawerOpen && setDrawerOpen(false)}
@@ -177,15 +177,17 @@ export default function Nav({
 
       {/* Desktop nav  */}
       <div className="hidden lg:flex flex-col min-w-72 border-r bg-neutral-950">
-        <div className="fixed">
-          <div className="px-12 pt-12 w-full inline-flex gap-2 items-center">
+        <div className="fixed w-72 h-screen flex flex-col">
+          <div className="p-12 w-full inline-flex gap-2 items-center flex-shrink-0">
             <Logo size="sm" />
             <h1 className="text-xl font-semibold">Simple Finance</h1>
           </div>
 
-          <div className="flex flex-col h-full justify-between">
+          <div className="flex-1 overflow-y-auto">
             <NavLinks />
+          </div>
 
+          <div className="flex-shrink-0">
             <UserNav user={user} />
           </div>
         </div>

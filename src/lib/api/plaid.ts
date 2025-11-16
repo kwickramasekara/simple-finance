@@ -1,14 +1,13 @@
 "use server";
 
 import { plaidClient } from "@/lib/plaid";
-import { getLogoUsingURL, parseStringify } from "@/lib/utils";
+import { getLogoUsingURL, parseStringify, getBillingDates } from "@/lib/utils";
 import {
   getInstitutionConnectionData,
   addInstitutionConnectionData,
 } from "@/lib/api/db";
 import { CountryCode, CreditAccountSubtype, Products } from "plaid";
 import { revalidatePath } from "next/cache";
-import { getBillingDates } from "@/lib/utils/dates";
 
 const APP_NAME = "Simple Finance";
 const APP_LANG = "en";

@@ -6,10 +6,10 @@ import {
   removeCommonNulls,
   handleError,
   extractYearsFromDocuments,
+  validAssetVal,
 } from "@/lib/utils";
 import { createAdminClient } from "@/lib/appwrite";
 import { revalidatePath } from "next/cache";
-import { validAssetVal } from "../utils/assets";
 
 export async function getLatestNetWorthAssets(): Promise<NetWorthAssetsCollection | null> {
   try {

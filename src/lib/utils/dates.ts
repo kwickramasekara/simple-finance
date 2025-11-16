@@ -40,5 +40,37 @@ export const getBillingDates = (billingDate: number) => {
  * @returns A negative number if `b` is before `a`, a positive number if `b` is after `a`, or 0 if they are equal.
  */
 export const sortByDate = (a: { date: string }, b: { date: string }) =>
-    b.date.localeCompare(a.date);
-  
+  b.date.localeCompare(a.date);
+
+/**
+ * Returns the month name for a given date.
+ * @param date - The date in string format.
+ * @param short - Optional parameter to return the short form of the month name.
+ * @returns The month name as a string.
+ */
+export function getMonth(date: string, short = false): string {
+  return new Date(date).toLocaleString("default", {
+    month: short ? "short" : "long",
+  });
+}
+
+/**
+ * Returns the ordinal suffix for a given day of the month.
+ *
+ * @param day - The day of the month (1-31).
+ * @returns The ordinal suffix ("st", "nd", "rd", "th") for the given day.
+ */
+export function getOrdinalSuffix(day: number): string {
+  if (day >= 11 && day <= 13) return "th";
+
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+}

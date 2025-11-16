@@ -10,6 +10,7 @@ import { PiggyBank } from "lucide-react";
 import { getLatestNetWorthAssets, getRetirementData } from "@/lib/api/db";
 import { SavingProgress } from "@/components/main/retirement/saving-progress";
 import Alert from "@/components/common/alert";
+import currency from "currency.js";
 
 export default async function Retirement() {
   const netWorthData = await getLatestNetWorthAssets();
@@ -19,13 +20,17 @@ export default async function Retirement() {
     return <Alert className="max-w-[360px] mx-auto">No data available.</Alert>;
   }
 
-  const valTotalBal = retirementData?.retirement_assets
-    ?.map((asset) => netWorthData[asset] || 0)
-    .reduce((acc, val) => acc + val, 0);
+  const valTotalBal =
+    retirementData?.retirement_assets?.reduce(
+      (acc, asset) => acc.add(netWorthData[asset] || 0),
+      currency(0)
+    ).value || 0;
 
-  const valHsaBal = retirementData?.hsa_assets
-    ?.map((asset) => netWorthData[asset] || 0)
-    .reduce((acc, val) => acc + val, 0);
+  const valHsaBal =
+    retirementData?.hsa_assets?.reduce(
+      (acc, asset) => acc.add(netWorthData[asset] || 0),
+      currency(0)
+    ).value || 0;
 
   return (
     <main>

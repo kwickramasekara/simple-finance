@@ -9,43 +9,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import assetsMap from "@/lib/maps/assets";
 import { chartToolTipCurrency } from "@/components/main/chart-tooltip";
+import { useAssets } from "@/hooks/net-worth/useAssets";
 
 export default function Assets({ data }: { data: NetWorthAssetsCollection[] }) {
-  const latestData = data[data.length - 1];
-  let chartData: {
-    asset: string;
-    value: number;
-    fill: string;
-  }[] = [];
-
-  let chartConfig: any = {
-    value: {
-      label: "Value",
-    },
-  } satisfies ChartConfig;
-
-  Object.entries(latestData).forEach(([key, value], index) => {
-    if (key.startsWith("$") || key === "date" || value === null) return;
-    chartConfig[key] = {
-      label: assetsMap[key] ?? key,
-      color: `hsl(var(--chart-${index}))`,
-    };
-
-    chartData.push({
-      asset: key,
-      value: value as number,
-      fill: chartConfig[key]?.color ?? "#fff",
-    });
-  });
+  const { chartData, chartConfig } = useAssets(data);
 
   return (
     <Card className="flex flex-col">

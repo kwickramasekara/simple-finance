@@ -1,14 +1,13 @@
 import { getTransactions } from "@/lib/api/plaid";
-import { cn } from "@/lib/utils";
-import { sortByDate } from "@/lib/utils/dates";
+import { cn, sortByDate } from "@/lib/utils";
 import PageHeader from "@/components/main/page-header";
 import { Wallet } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Transaction } from "plaid";
 import CreditCard from "@/components/main/credit-card";
-import { getTotal } from "@/lib/utils/transactions";
 import Alert from "@/components/common/alert";
 import TransactionCard from "@/components/main/expenses/transaction-card";
+import CardSummary from "@/components/main/expenses/card-summary";
 
 export default async function Expenses() {
   const txs = (await getTransactions()) || [];
@@ -27,34 +26,6 @@ export default async function Expenses() {
     })
     .flat()
     .sort(sortByDate);
-
-  const headerMarkup = (headerText: string, transactions: Transaction[]) => {
-    return (
-      <p className="grid gap-2 mx-4 my-4 font-medium text-center">
-        <span>{headerText}</span>
-        <span className="text-muted-foreground font-mono">
-          {new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-          }).format(getTotal(transactions))}
-        </span>
-      </p>
-    );
-  };
-
-  const transactionsMarkup = (
-    transactions: Transaction[],
-    accountName?: string
-  ) => {
-    return transactions.map((transaction: Transaction) => (
-      <TransactionCard
-        key={transaction.transaction_id}
-        transaction={transaction}
-        accountName={accountName}
-        accountMap={accountMap}
-      />
-    ));
-  };
 
   return (
     <main>
@@ -82,21 +53,38 @@ export default async function Expenses() {
           </TabsList>
           <TabsContent value="all">
             <div className="grid grid-cols-1 gap-2">
-              {headerMarkup("All Transactions", allTxs)}
-              {transactionsMarkup(allTxs)}
+              <CardSummary
+                headerText="All Transactions"
+                transactions={allTxs}
+              />
+              {allTxs.map((transaction: Transaction) => (
+                <TransactionCard
+                  key={transaction.transaction_id}
+                  transaction={transaction}
+                  accountMap={accountMap}
+                />
+              ))}
             </div>
           </TabsContent>
           {txs?.map(({ account, transactions }) => (
             <TabsContent key={account.id} value={account.id}>
               <div className="grid grid-cols-1 gap-2">
-                {headerMarkup(
-                  account.givenName || account.officialName || account.name,
-                  transactions
-                )}
-                {transactionsMarkup(
-                  transactions,
-                  account.givenName || account.officialName || account.name
-                )}
+                <CardSummary
+                  headerText={
+                    account.givenName || account.officialName || account.name
+                  }
+                  transactions={transactions}
+                />
+                {transactions.map((transaction: Transaction) => (
+                  <TransactionCard
+                    key={transaction.transaction_id}
+                    transaction={transaction}
+                    accountMap={accountMap}
+                    accountName={
+                      account.givenName || account.officialName || account.name
+                    }
+                  />
+                ))}
               </div>
             </TabsContent>
           ))}

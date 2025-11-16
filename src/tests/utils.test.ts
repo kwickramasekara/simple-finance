@@ -4,7 +4,7 @@ import {
   stripDbMetadata,
   removeCommonNulls,
   getMonthlyNetWorthTotals,
-} from "../lib/utils";
+} from "@/lib/utils";
 
 describe("Utils", () => {
   describe("getMonth", () => {
@@ -112,18 +112,21 @@ describe("Utils", () => {
           cash: 1000.45,
           stocks: 500,
           $id: "66b8f45e000d8a4ffcfb",
+          $sequence: "0",
         },
         {
           date: "2024-04-16T00:00:47.926+00:00",
           cash: 2500,
           stocks: 200,
           $id: "66b845ad003121330411",
+          $sequence: "0",
         },
         {
           date: "2024-05-14T12:11:08.879+00:00",
           cash: 300,
           stocks: 4000,
           $id: "66b8f0dc002c86bdec3c",
+          $sequence: "0",
         },
       ];
       const result = getMonthlyNetWorthTotals(data);

@@ -1,5 +1,7 @@
+import currency from "currency.js";
+
 /**
- * Formats a number as a currency string.
+ * Formats a number as a currency string using currency.js.
  *
  * @param value - The number to format as currency.
  * @param round - Whether to round the number or not. Default is true.
@@ -24,12 +26,11 @@ export function formatCurrency(
       ? absValue / 1000
       : absValue;
 
-  const formattedString = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: round ? 0 : 2,
-    maximumFractionDigits: round ? (absValue > 1000000 ? 1 : 0) : 2,
-  }).format(valueToFormat);
+  // Use currency.js for formatting
+  const formattedString = currency(valueToFormat, {
+    symbol: "$",
+    precision: round ? (absValue > 1000000 ? 1 : 0) : 2,
+  }).format();
 
   // Preserve the sign in the output
   const signPrefix = sign === -1 ? "-" : "";

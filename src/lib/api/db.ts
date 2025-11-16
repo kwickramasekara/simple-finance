@@ -10,6 +10,7 @@ import {
 } from "@/lib/utils";
 import { createAdminClient } from "@/lib/appwrite";
 import { revalidatePath } from "next/cache";
+import currency from "currency.js";
 
 export async function getLatestNetWorthAssets(): Promise<NetWorthAssetsCollection | null> {
   try {
@@ -126,7 +127,7 @@ export async function addNetWorthAssets(
         dataObj.date = new Date(value as string).toISOString();
       } else {
         validAssetVal(value as string)
-          ? (dataObj[key] = parseFloat(value as string))
+          ? (dataObj[key] = currency(value as string).value)
           : null;
       }
     });

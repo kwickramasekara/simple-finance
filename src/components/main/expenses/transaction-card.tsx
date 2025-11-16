@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { Transaction } from "plaid";
+import currency from "currency.js";
 import {
   Accordion,
   AccordionContent,
@@ -75,9 +76,7 @@ export default function TransactionCard({
                         "text-yellow-400"
                     )}
                   >
-                    {`${
-                      transaction.iso_currency_code === "USD" && "$"
-                    }${transaction.amount.toFixed(2)}`}
+                    {currency(transaction.amount).format()}
                   </p>
                   {transaction.pending && (
                     <p className="font-medium text-sm text-right">Pending</p>

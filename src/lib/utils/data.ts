@@ -1,4 +1,5 @@
 import { Models } from "node-appwrite";
+import currency from "currency.js";
 
 /**
  * Appwrite databases often return metadata fields prefixed with `$` which leads to
@@ -77,21 +78,20 @@ export function removeCommonNulls(data: any[]): any[] {
 
 /**
  * Validates if the given string is a valid asset value.
+ * Uses currency.js to parse and validate the value.
  * @param str string to be validated
  * @returns
  */
 export const validAssetVal = (str: string | null | undefined): boolean => {
-  if (
-    str === null ||
-    str === undefined ||
-    str.trim() === "" ||
-    str.trim() === "0" ||
-    parseFloat(str) < 0
-  ) {
+  if (str === null || str === undefined || str.trim() === "") {
     return false;
   }
 
-  return true;
+  // Use currency.js to parse the value
+  const parsed = currency(str);
+
+  // Check if the parsed value is valid and greater than 0
+  return !isNaN(parsed.value) && parsed.value > 0;
 };
 
 /**

@@ -55,7 +55,7 @@ export default function TransactionCard({
                       {transaction.merchant_name || transaction.name}
                     </p>
                     <p className="text-sm font-medium text-muted-foreground">
-                      {transaction.authorized_date || transaction.date}{" "}
+                      {transaction.date || transaction.authorized_date}{" "}
                     </p>
                   </div>
                 </div>

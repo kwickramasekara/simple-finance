@@ -22,28 +22,22 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { formatCurrency, getMonthlyNetWorthTotals } from "@/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import { chartToolTipCurrency } from "@/components/main/chart-tooltip";
+import { useMonthlyChange } from "@/hooks/net-worth/useMonthlyChange";
 
 const chartConfig = {
   difference: {
     label: "Difference",
   },
 } satisfies ChartConfig;
+
 export default function MonthlyChange({
   data,
 }: {
   data: NetWorthAssetsCollection[];
 }) {
-  const monthlyTotals = getMonthlyNetWorthTotals(data);
-  const chartData: { month: string; difference: number }[] = [];
-
-  monthlyTotals.forEach((item, index) => {
-    if (index === 0) return;
-    let difference = item.total - monthlyTotals[index - 1].total;
-    difference = Math.round(difference);
-    chartData.push({ month: item.month, difference });
-  });
+  const chartData = useMonthlyChange(data);
 
   return (
     <Card>

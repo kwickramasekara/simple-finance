@@ -3,7 +3,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { Transaction } from "plaid";
+import type { Transaction } from "plaid";
+import currency from "currency.js";
 import {
   Accordion,
   AccordionContent,
@@ -54,7 +55,7 @@ export default function TransactionCard({
                       {transaction.merchant_name || transaction.name}
                     </p>
                     <p className="text-sm font-medium text-muted-foreground">
-                      {transaction.authorized_date || transaction.date}{" "}
+                      {transaction.date || transaction.authorized_date}{" "}
                     </p>
                   </div>
                 </div>
@@ -75,9 +76,7 @@ export default function TransactionCard({
                         "text-yellow-400"
                     )}
                   >
-                    {`${
-                      transaction.iso_currency_code === "USD" && "$"
-                    }${transaction.amount.toFixed(2)}`}
+                    {currency(transaction.amount).format()}
                   </p>
                   {transaction.pending && (
                     <p className="font-medium text-sm text-right">Pending</p>

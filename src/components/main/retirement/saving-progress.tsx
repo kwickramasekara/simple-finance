@@ -1,6 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { cn, formatCurrency } from "@/lib/utils";
+import currency from "currency.js";
 
 export function SavingProgress({
   id,
@@ -13,7 +14,7 @@ export function SavingProgress({
   valCurrent: number;
   valGoal: number;
 }) {
-  const percentage = (valCurrent / valGoal) * 100;
+  const percentage = currency(valCurrent).divide(valGoal).multiply(100).value;
 
   return (
     <div className="flex flex-col gap-2">

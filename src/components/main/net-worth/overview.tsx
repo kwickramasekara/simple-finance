@@ -9,37 +9,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown } from "lucide-react";
-import { cn, formatCurrency, getMonthlyNetWorthTotals } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import { chartToolTipCurrency } from "@/components/main/chart-tooltip";
+import { useOverview } from "@/hooks/net-worth/useOverview";
 
 export default function Overview({
   data,
 }: {
   data: NetWorthAssetsCollection[];
 }) {
-  const monthlyTotals = getMonthlyNetWorthTotals(data);
-  const lastMonth = monthlyTotals[monthlyTotals.length - 1];
-  const secondLastMonth = monthlyTotals[monthlyTotals.length - 2];
-  const netWorthDiff = lastMonth.total - secondLastMonth?.total || 0;
-
-  const chartConfig = {
-    data: {
-      label: "Net Worth",
-      color: netWorthDiff >= 0 ? "hsl(var(--chart-1))" : "hsl(var(--chart-5))",
-    },
-    total: {
-      label: "Net Worth",
-    },
-  } satisfies ChartConfig;
-  const chartData = monthlyTotals;
-  const monthlyMin = Math.min(...monthlyTotals.map((obj) => obj.total));
+  const { currentMonth, netWorthDiff, chartData, monthlyMin, chartConfig } =
+    useOverview(data);
 
   return (
     <Card>
@@ -53,7 +39,7 @@ export default function Overview({
           </div>
           <div className="flex flex-col">
             <p className="font-mono font-bold text-xl text-right">
-              {formatCurrency(lastMonth.total, true, true)}
+              {formatCurrency(currentMonth.total, true, true)}
             </p>
             {netWorthDiff !== 0 && (
               <Badge

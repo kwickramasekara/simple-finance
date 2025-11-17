@@ -13,8 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { cn, formatCurrency, getMonth } from "@/lib/utils";
-import { cleanDBMetadata } from "@/lib/utils/data";
+import { cn, formatCurrency, getMonth, cleanDBMetadata } from "@/lib/utils";
 import assetsMap from "@/lib/maps/assets";
 
 export default function Details({

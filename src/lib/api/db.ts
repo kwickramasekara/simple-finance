@@ -1,6 +1,6 @@
 "use server";
 
-import { ID, Query } from "node-appwrite";
+import { ID, Query, Permission, Role } from "node-appwrite";
 import {
   stripDbMetadata,
   removeCommonNulls,
@@ -8,13 +8,13 @@ import {
   extractYearsFromDocuments,
   validAssetVal,
 } from "@/lib/utils";
-import { createAdminClient } from "@/lib/appwrite";
+import { createSessionClient } from "@/lib/appwrite";
 import { revalidatePath } from "next/cache";
 import currency from "currency.js";
 
 export async function getLatestNetWorthAssets(): Promise<NetWorthAssetsCollection | null> {
   try {
-    const { database } = await createAdminClient();
+    const { database } = await createSessionClient();
 
     const result = await database.listDocuments(
       process.env.APPWRITE_DATABASE_ID!,
@@ -34,7 +34,7 @@ export async function getLatestNetWorthAssets(): Promise<NetWorthAssetsCollectio
 
 export async function getRetirementData(): Promise<RetirementData | null> {
   try {
-    const { database } = await createAdminClient();
+    const { database } = await createSessionClient();
 
     const result = await database.listDocuments(
       process.env.APPWRITE_DATABASE_ID!,
@@ -54,7 +54,7 @@ export async function getRetirementData(): Promise<RetirementData | null> {
 
 export async function getAvailableNetWorthYears(): Promise<string[]> {
   try {
-    const { database } = await createAdminClient();
+    const { database } = await createSessionClient();
 
     const result = await database.listDocuments(
       process.env.APPWRITE_DATABASE_ID!,
@@ -76,7 +76,7 @@ export async function getNetWorthAssetsByYear(
   year?: string
 ): Promise<NetWorthAssetsCollection[] | null> {
   try {
-    const { database } = await createAdminClient();
+    const { database } = await createSessionClient();
 
     // Get the year from the query string or use the current year
     year = year || new Date().getFullYear().toString();
@@ -132,13 +132,21 @@ export async function addNetWorthAssets(
       }
     });
 
-    const { database } = await createAdminClient();
+    const { database, account } = await createSessionClient();
+
+    // Get the current user ID to set permissions
+    const user = await account.get();
 
     await database.createDocument(
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_NETWORTH_ASSETS_COLLECTION_ID!,
       ID.unique(),
-      dataObj
+      dataObj,
+      [
+        Permission.read(Role.user(user.$id)),
+        Permission.update(Role.user(user.$id)),
+        Permission.delete(Role.user(user.$id)),
+      ]
     );
 
     revalidatePath("/net-worth");
@@ -153,13 +161,21 @@ export async function addNetWorthAssets(
 
 export async function addInstitutionConnectionData(data: object) {
   try {
-    const { database } = await createAdminClient();
+    const { database, account } = await createSessionClient();
+
+    // Get the current user ID to set permissions
+    const user = await account.get();
 
     await database.createDocument(
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!,
       ID.unique(),
-      data
+      data,
+      [
+        Permission.read(Role.user(user.$id)),
+        Permission.update(Role.user(user.$id)),
+        Permission.delete(Role.user(user.$id)),
+      ]
     );
 
     return {
@@ -179,7 +195,7 @@ export async function updateInstitutionConnectionData(
   data: FormData
 ): Promise<{ error?: string; success?: boolean }> {
   try {
-    const { database } = await createAdminClient();
+    const { database } = await createSessionClient();
 
     if (!data.get("id")) throw new Error("ID is required");
 
@@ -208,7 +224,7 @@ export async function deleteInstitutionConnectionData(
   data: FormData
 ): Promise<{ error?: string; success?: boolean }> {
   try {
-    const { database } = await createAdminClient();
+    const { database } = await createSessionClient();
 
     if (!data.get("id")) throw new Error("ID is required");
 
@@ -230,7 +246,7 @@ export async function deleteInstitutionConnectionData(
 
 export async function getInstitutionConnectionData() {
   try {
-    const { database } = await createAdminClient();
+    const { database } = await createSessionClient();
 
     const result = await database.listDocuments(
       process.env.APPWRITE_DATABASE_ID!,

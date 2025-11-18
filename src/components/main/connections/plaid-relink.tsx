@@ -81,6 +81,7 @@ export default function PlaidRelink({
       size="icon"
       onClick={() => setReconnectingConnection(connection.$id)}
       disabled={processing || reconnectingConnection === connection.$id}
+      title="Reconnect account"
     >
       {processing || reconnectingConnection === connection.$id ? (
         <Loader2 size={16} className="animate-spin" />

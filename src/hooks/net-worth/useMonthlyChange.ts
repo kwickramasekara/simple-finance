@@ -21,6 +21,9 @@ export function useMonthlyChange(data: NetWorthAssetsCollection[]) {
       chartData.push({ month: item.month, difference: Math.round(difference) });
     });
 
-    return chartData;
+    return {
+      chartData,
+      notEnoughData: chartData.length < 2,
+    };
   }, [data]);
 }

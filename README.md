@@ -16,8 +16,12 @@ Use Appwrite CLI to sync database documents. Requires `appwrite-cli` and `jq`.
 6. `appwrite databases listDocuments --databaseId <dbID> --collectionId <collectionid> --json | jq '.documents[] | del(.["$id"], .["$createdAt"], .["$updatedAt"], .["$permissions"], .["$databaseId"], .["$collectionId"])' > data.json`
 7. `npx appwrite databases createDocument --databaseId <dbId> --collectionId <collectionid> --documentId <uniqueId> --data <stringifiedJSONObject>`
 
-## Gotchas
+## Notes
 
 ### Safari local development
 
 Auth does not work on Safari with localhost due to how it handles cookies. Set an `/etc/hosts` entry to `127.0.0.1 sf-local.keithw.me` and then run `npm run dev-safari` task. This ensures the appwrite server and the frontend are on the same domain (requirement for auth cookies with Safari). Safari also requires the app to be on HTTPS, so the `dev-safari` task uses a self-signed certificate.
+
+### Access control
+
+All Appwrite databases should have the `CREATE` permission set to "All Users" to allow users to create documents. The `UPDATE`, `DELETE`, and `READ` permissions should be set at the document (row) level to ensure that data is accessible only to its owner. To enforce this restriction, enable Row Level Security (RLS) in the Appwrite database settings.

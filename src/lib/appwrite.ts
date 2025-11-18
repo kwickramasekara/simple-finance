@@ -23,6 +23,9 @@ export async function createSessionClient() {
     get avatar() {
       return new Avatars(client);
     },
+    get database() {
+      return new Databases(client);
+    },
   };
 }
 

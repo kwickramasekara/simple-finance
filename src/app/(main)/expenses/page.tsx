@@ -1,13 +1,13 @@
 import { getTransactions } from "@/lib/api/plaid";
-import { cn, sortByDate } from "@/lib/utils";
+import { sortByDate } from "@/lib/utils";
 import PageHeader from "@/components/main/page-header";
 import { Wallet } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Transaction } from "plaid";
 import CreditCard from "@/components/main/credit-card";
-import Alert from "@/components/common/alert";
 import TransactionCard from "@/components/main/expenses/transaction-card";
 import CardSummary from "@/components/main/expenses/card-summary";
+import NoData from "@/components/common/no-data";
 
 export default async function Expenses() {
   const txs = (await getTransactions()) || [];
@@ -32,17 +32,24 @@ export default async function Expenses() {
       <PageHeader title="Expenses" icon={Wallet} />
 
       {txs.length === 0 && (
-        <Alert type="warning">
-          No transactions found. Please verify your account connections.
-        </Alert>
+        <NoData
+          title="No transactions found"
+          description="Please verify account connections to view your expenses."
+        />
       )}
 
       {txs?.length > 0 && (
         <Tabs defaultValue="all">
-          <TabsList className={cn("grid w-full gap-2", `grid-cols-6`)}>
-            <TabsTrigger value="all">All</TabsTrigger>
+          <TabsList className="flex w-full gap-2">
+            <TabsTrigger value="all" className="flex-1">
+              All
+            </TabsTrigger>
             {txs?.map(({ account }) => (
-              <TabsTrigger key={account.id} value={account.id}>
+              <TabsTrigger
+                key={account.id}
+                value={account.id}
+                className="flex-1"
+              >
                 <CreditCard
                   mask={account.mask}
                   logo={account.institutionLogo}

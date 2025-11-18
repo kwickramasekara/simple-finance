@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import CreditCard from "@/components/main/credit-card";
 import { getOrdinalSuffix } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Trash, Pencil, AlertCircle } from "lucide-react";
+import { Trash, Pencil, TriangleAlert } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -14,6 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,6 +28,13 @@ import Alert from "@/components/common/alert";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { checkConnectionStatus } from "@/lib/api/plaid";
 import PlaidRelink from "./plaid-relink";
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "@/components/ui/item";
 
 type ConnectionStatus = {
   checking: boolean;
@@ -144,52 +152,57 @@ export default function ConnectionsList({
                 </div>
 
                 <div className="flex w-1/4 gap-4 justify-end">
-                  <PlaidRelink
-                    connection={connection}
-                    userId={userId}
-                    connectionStatus={status}
-                    reconnectingConnection={reconnectingConnection}
-                    setReconnectingConnection={setReconnectingConnection}
-                  />
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => {
-                      setEditDialogOpen(true);
-                      setCurrentConnection(connection);
-                    }}
-                  >
-                    <Pencil size={16} />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => {
-                      setDeleteDialogOpen(true);
-                      setCurrentConnection(connection);
-                    }}
-                  >
-                    <Trash size={16} />
-                  </Button>
+                  <ButtonGroup>
+                    <PlaidRelink
+                      connection={connection}
+                      userId={userId}
+                      connectionStatus={status}
+                      reconnectingConnection={reconnectingConnection}
+                      setReconnectingConnection={setReconnectingConnection}
+                    />
+
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      title="Edit details"
+                      onClick={() => {
+                        setEditDialogOpen(true);
+                        setCurrentConnection(connection);
+                      }}
+                    >
+                      <Pencil size={16} />
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      title="Delete connection"
+                      onClick={() => {
+                        setDeleteDialogOpen(true);
+                        setCurrentConnection(connection);
+                      }}
+                    >
+                      <Trash size={16} />
+                    </Button>
+                  </ButtonGroup>
                 </div>
               </div>
               {status.error && (
-                <div className="mt-4 p-3 bg-amber-950/25 rounded-md flex items-start gap-2">
-                  <AlertCircle
-                    size={16}
-                    className="text-amber-500 mt-0.5 flex-shrink-0"
-                  />
-                  <div className="flex-1">
-                    <p className="text-sm text-amber-500 font-medium">
+                <Item variant="muted" className="mt-4 bg-amber-950/25">
+                  <ItemMedia variant="icon">
+                    <TriangleAlert className="text-amber-500 " />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemTitle className="text-amber-500">
                       Connection Issue
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
+                    </ItemTitle>
+                    <ItemDescription>
                       {status.error === "ITEM_LOGIN_REQUIRED"
                         ? "Your login credentials have changed or expired. Please reconnect this account."
                         : "There was an error connecting to this account. Please try reconnecting."}
-                    </p>
-                  </div>
-                </div>
+                    </ItemDescription>
+                  </ItemContent>
+                </Item>
               )}
             </CardContent>
           </Card>

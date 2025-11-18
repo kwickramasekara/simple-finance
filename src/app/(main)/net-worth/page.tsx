@@ -2,7 +2,6 @@ import Assets from "@/components/main/net-worth/assets";
 import MonthlyChange from "@/components/main/net-worth/monthly-change";
 import Overview from "@/components/main/net-worth/overview";
 import Details from "@/components/main/net-worth/details";
-import Alert from "@/components/common/alert";
 import AddAssets from "@/components/main/net-worth/add-assets";
 import YearDropdown from "@/components/main/net-worth/year-dropdown";
 import { LineChart } from "lucide-react";
@@ -12,16 +11,22 @@ import {
 } from "@/lib/api/db";
 import PageHeader from "@/components/main/page-header";
 import { redirect } from "next/navigation";
+import NoData from "@/components/common/no-data";
 
 interface NetWorthProps {
   searchParams: { year?: string };
 }
 
-const PageError = () => {
+const NoDataView = () => {
   return (
     <main>
-      <PageHeader title="Net Worth" icon={LineChart} />
-      <Alert className="max-w-[360px] mx-auto">No data available.</Alert>
+      <PageHeader title="Net Worth" icon={LineChart}>
+        <div className="flex gap-2">
+          <AddAssets />
+        </div>
+      </PageHeader>
+
+      <NoData description="Please add assets to start tracking your net worth." />
     </main>
   );
 };
@@ -30,23 +35,17 @@ export default async function NetWorth({ searchParams }: NetWorthProps) {
   const availableYears = await getAvailableNetWorthYears();
 
   // If no years available, show no data message
-  if (!availableYears || availableYears.length === 0) {
-    return <PageError />;
-  }
+  if (!availableYears || availableYears.length === 0) return <NoDataView />;
 
   // Get the year from URL params or default to latest year
   const selectedYear = searchParams.year || availableYears[0];
 
   // Redirect to include year in URL if not present
-  if (!searchParams.year) {
-    redirect(`/net-worth?year=${selectedYear}`);
-  }
+  if (!searchParams.year) redirect(`/net-worth?year=${selectedYear}`);
 
   const netWorthData = await getNetWorthAssetsByYear(selectedYear);
 
-  if (!netWorthData || netWorthData?.length === 0) {
-    return <PageError />;
-  }
+  if (!netWorthData || netWorthData.length === 0) return <NoDataView />;
 
   return (
     <main>

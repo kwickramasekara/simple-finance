@@ -235,7 +235,7 @@ export async function regenerateRecoveryCodes() {
   }
 }
 
-export async function getAccount(): Promise<APIResponse> {
+export async function getAccountAction(): Promise<APIResponse> {
   try {
     const { account } = await createSessionClient();
 

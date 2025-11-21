@@ -4,6 +4,7 @@ import GeneralCard from "@/components/main/account/general-card";
 import SecurityCard from "@/components/main/account/security-card";
 import PageHeader from "@/components/main/page-header";
 import { SquareUserRound } from "lucide-react";
+import AvatarCard from "@/components/main/account/avatar-card";
 
 export default async function Account() {
   const res = await getAccountAction();
@@ -22,6 +23,10 @@ export default async function Account() {
             initialEmail={account.email}
           />
           <SecurityCard initialMfa={account.mfa} />
+          <AvatarCard
+            avatarUrl={account.prefs?.avatarUrl}
+            userName={account.name}
+          />
         </div>
       )}
     </main>

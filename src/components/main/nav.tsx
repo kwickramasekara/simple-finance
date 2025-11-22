@@ -1,7 +1,7 @@
 "use client";
 
 import { Models } from "node-appwrite";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import Avatar from "@/components/common/avatar";
 import Logo from "@/components/common/logo";
 import {
   LogOut,
@@ -94,9 +94,12 @@ function UserNav({
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <div className="flex items-center gap-2 cursor-pointer text-muted-foreground hover:text-foreground">
-            <Avatar>
-              <AvatarFallback>{user?.name[0]}</AvatarFallback>
-            </Avatar>
+            <Avatar
+              src={user?.prefs?.avatarUrl}
+              alt={user?.name || "User"}
+              fallback={user?.name || "?"}
+              size="md"
+            />
             <div className="flex flex-col">
               <p className="max-w-36 truncate font-semibold text-inherit">
                 {user?.name}

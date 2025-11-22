@@ -6,8 +6,8 @@ import { cookies } from "next/headers";
 
 export async function createSessionClient() {
   const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!);
+    .setEndpoint(process.env.APPWRITE_ENDPOINT!)
+    .setProject(process.env.APPWRITE_PROJECT_ID!);
 
   const session = cookies().get("sf-user-session");
   if (!session || !session.value) {
@@ -34,8 +34,8 @@ export async function createSessionClient() {
 
 export async function createAdminClient() {
   const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!)
+    .setEndpoint(process.env.APPWRITE_ENDPOINT!)
+    .setProject(process.env.APPWRITE_PROJECT_ID!)
     .setKey(process.env.APPWRITE_API_KEY!);
 
   return {

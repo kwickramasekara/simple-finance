@@ -1,4 +1,3 @@
-export * from "./avatar";
 export * from "./calculations";
 export * from "./currency";
 export * from "./data";

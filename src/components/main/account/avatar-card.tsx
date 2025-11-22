@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Avatar from "@/components/common/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,7 +13,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { uploadAvatarAction, deleteAvatarAction } from "@/lib/api/account";
-import { getOptimizedAvatarUrl } from "@/lib/utils";
 import { Upload, Trash2 } from "lucide-react";
 import Alert from "@/components/common/alert";
 
@@ -95,22 +94,17 @@ export default function AvatarCard({ avatarUrl, userName }: AvatarCardProps) {
         {error && <Alert>{error}</Alert>}
 
         <div className="flex flex-col items-center gap-4">
-          <div className="relative">
+          <div
+            className="relative cursor-pointer"
+            onClick={() => fileInputRef.current?.click()}
+          >
             <Avatar
-              className="h-32 w-32 border border-neutral-800 cursor-pointer"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <AvatarImage
-                src={getOptimizedAvatarUrl(avatarUrl)}
-                alt={userName}
-                className={isPending ? "animate-pulse" : ""}
-              />
-              <AvatarFallback
-                className={`text-3xl ${isPending ? "animate-pulse" : ""}`}
-              >
-                {userName[0] || "?"}
-              </AvatarFallback>
-            </Avatar>
+              src={avatarUrl}
+              alt={userName}
+              fallback={userName}
+              size="xl"
+              className={isPending ? "animate-pulse" : ""}
+            />
           </div>
 
           <div className="flex w-full flex-col items-center gap-2 sm:flex-row sm:justify-center">

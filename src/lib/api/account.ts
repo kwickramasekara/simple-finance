@@ -285,7 +285,7 @@ export async function uploadAvatarAction(
       }
     }
 
-    // Upload new avatar
+    // Upload new avatar (store original, Next.js will optimize)
     const newFileId = ID.unique();
     const uploadedFile = await storage.createFile(
       process.env.APPWRITE_AVATAR_BUCKET_ID!,
@@ -293,8 +293,8 @@ export async function uploadAvatarAction(
       file
     );
 
-    // Store the base view URL (will be optimized client-side)
-    const avatarUrl = `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_AVATAR_BUCKET_ID}/files/${uploadedFile.$id}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`;
+    // Store the view URL (Next.js Image will handle optimization)
+    const avatarUrl = `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_AVATAR_BUCKET_ID}/files/${uploadedFile.$id}/view?project=${process.env.APPWRITE_PROJECT_ID}`;
 
     // Update user preferences with new avatar info
     await account.updatePrefs({

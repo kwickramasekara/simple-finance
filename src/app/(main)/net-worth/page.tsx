@@ -14,7 +14,7 @@ import { redirect } from "next/navigation";
 import NoData from "@/components/common/no-data";
 
 interface NetWorthProps {
-  searchParams: { year?: string };
+  searchParams: Promise<{ year?: string }>;
 }
 
 const NoDataView = () => {
@@ -31,7 +31,8 @@ const NoDataView = () => {
   );
 };
 
-export default async function NetWorth({ searchParams }: NetWorthProps) {
+export default async function NetWorth(props: NetWorthProps) {
+  const searchParams = await props.searchParams;
   const availableYears = await getAvailableNetWorthYears();
 
   // If no years available, show no data message

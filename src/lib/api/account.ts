@@ -25,7 +25,7 @@ export async function signUpAction(prevState: any, formData: FormData) {
       password as string
     );
 
-    cookies().set("sf-user-session", session.secret, {
+    (await cookies()).set("sf-user-session", session.secret, {
       path: "/",
       httpOnly: true,
       sameSite: "strict",
@@ -51,7 +51,7 @@ export async function signInAction(prevState: any, formData: FormData) {
       password as string
     );
 
-    cookies().set("sf-user-session", session.secret, {
+    (await cookies()).set("sf-user-session", session.secret, {
       path: "/",
       httpOnly: true,
       sameSite: "strict",
@@ -74,7 +74,7 @@ export async function signOut() {
   try {
     const { account } = await createSessionClient();
 
-    cookies().delete("sf-user-session");
+    (await cookies()).delete("sf-user-session");
 
     const response = await account.deleteSession("current");
 

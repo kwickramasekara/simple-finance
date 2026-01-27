@@ -15,13 +15,18 @@ import {
 } from "@/components/ui/table";
 import { cn, formatCurrency, getMonth, cleanDBMetadata } from "@/lib/utils";
 import assetsMap from "@/lib/maps/assets";
+import EditAssets from "./edit-assets";
 
 export default function Details({
   data,
 }: {
   data: NetWorthAssetsCollection[] | null;
 }) {
-  data = data ? (cleanDBMetadata(data) as NetWorthAssetsCollection[]) : null;
+  // Keep original data with IDs for editing
+  const originalData = data;
+  const cleanedData = data
+    ? (cleanDBMetadata(data) as NetWorthAssetsCollection[])
+    : null;
 
   return (
     <Card>
@@ -32,11 +37,11 @@ export default function Details({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {data && data.length > 0 ? (
+        {cleanedData && cleanedData.length > 0 ? (
           <Table>
             <TableHeader>
               <TableRow>
-                {Object.keys(data[0]).map((key, index) => (
+                {Object.keys(cleanedData[0]).map((key, index) => (
                   <TableHead
                     key={key}
                     className={cn(
@@ -47,23 +52,29 @@ export default function Details({
                     {assetsMap[key]}
                   </TableHead>
                 ))}
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((item: NetWorthAssetsCollection, index) => (
+              {cleanedData.map((item: NetWorthAssetsCollection, index) => (
                 <TableRow key={index}>
-                  {Object.keys(item).map((key, index) => (
+                  {Object.keys(item).map((key, colIndex) => (
                     <TableCell
                       key={key}
-                      className={cn("font-mono", index > 0 && "text-right")}
+                      className={cn("font-mono", colIndex > 0 && "text-right")}
                     >
-                      {index === 0
+                      {colIndex === 0
                         ? getMonth(item[key], true)
                         : item[key] === null
                         ? "-"
                         : formatCurrency(item[key])}
                     </TableCell>
                   ))}
+                  <TableCell className="text-right">
+                    {originalData && originalData[index] && (
+                      <EditAssets data={originalData[index]} />
+                    )}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

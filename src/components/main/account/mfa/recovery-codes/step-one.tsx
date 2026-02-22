@@ -6,7 +6,7 @@ import {
 import { useEffect, useState } from "react";
 import Alert from "@/components/common/alert";
 import Loading from "@/components/main/loading";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 
 export default function MFARegerateCodesStepOne({
   stepper,
@@ -20,9 +20,9 @@ export default function MFARegerateCodesStepOne({
   const [challengeError, setChallengeError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [challengeId, setChallengeId] = useState<any>(null);
-  const [state, formAction] = useFormState(
+  const [state, formAction] = useActionState(
     verifyMFAChallengeAction,
-    initialState
+    initialState,
   );
 
   const init = async function () {

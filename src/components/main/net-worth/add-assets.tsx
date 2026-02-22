@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CirclePlus } from "lucide-react";
 import { addNetWorthAssets } from "@/lib/api/db";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import Submit from "@/components/forms/submit";
 import Alert from "@/components/common/alert";
 import { useState, ChangeEvent, useEffect } from "react";
@@ -25,7 +25,7 @@ export default function AddAssets() {
     error: "",
     success: false,
   };
-  const [state, formAction] = useFormState(addNetWorthAssets, initialState);
+  const [state, formAction] = useActionState(addNetWorthAssets, initialState);
   const [dateValue, setDateValue] = useState(todaysDate);
   const [isOpen, setIsOpen] = useState(false);
 

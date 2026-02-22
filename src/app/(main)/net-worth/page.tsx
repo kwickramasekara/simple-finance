@@ -14,7 +14,7 @@ import { redirect } from "next/navigation";
 import NoData from "@/components/common/no-data";
 
 interface NetWorthProps {
-  searchParams: { year?: string };
+  searchParams: Promise<{ year?: string }>;
 }
 
 const NoDataView = () => {
@@ -32,16 +32,17 @@ const NoDataView = () => {
 };
 
 export default async function NetWorth({ searchParams }: NetWorthProps) {
+  const resolvedParams = await searchParams;
   const availableYears = await getAvailableNetWorthYears();
 
   // If no years available, show no data message
   if (!availableYears || availableYears.length === 0) return <NoDataView />;
 
   // Get the year from URL params or default to latest year
-  const selectedYear = searchParams.year || availableYears[0];
+  const selectedYear = resolvedParams.year || availableYears[0];
 
   // Redirect to include year in URL if not present
-  if (!searchParams.year) redirect(`/net-worth?year=${selectedYear}`);
+  if (!resolvedParams.year) redirect(`/net-worth?year=${selectedYear}`);
 
   const netWorthData = await getNetWorthAssetsByYear(selectedYear);
 

@@ -13,7 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import { createMFAChallenge, disableMFAAction } from "@/lib/api/account";
 import Loading from "@/components/main/loading";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { CircleCheck } from "lucide-react";
 
@@ -33,7 +33,7 @@ export default function MFADisableDialog({
   const [challengeId, setChallengeId] = useState("");
   const [challengeError, setChallengeError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [state, formAction] = useFormState(disableMFAAction, initialState);
+  const [state, formAction] = useActionState(disableMFAAction, initialState);
 
   const init = async function () {
     setIsLoading(true);

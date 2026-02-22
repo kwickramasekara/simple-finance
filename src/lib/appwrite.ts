@@ -9,7 +9,7 @@ export async function createSessionClient() {
     .setEndpoint(process.env.APPWRITE_ENDPOINT!)
     .setProject(process.env.APPWRITE_PROJECT_ID!);
 
-  const session = cookies().get("sf-user-session");
+  const session = (await cookies()).get("sf-user-session");
   if (!session || !session.value) {
     throw new Error("No session");
   }

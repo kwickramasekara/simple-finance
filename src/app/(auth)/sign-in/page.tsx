@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Alert from "@/components/common/alert";
 import { signInAction } from "@/lib/api/account";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import Submit from "@/components/forms/submit";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ export default function SignIn() {
   const initialState = {
     error: "",
   };
-  const [state, formAction] = useFormState(signInAction, initialState);
+  const [state, formAction] = useActionState(signInAction, initialState);
 
   // success state is already handled in the layout component
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { verifyMFAAction } from "@/lib/api/account";
 import Alert from "@/components/common/alert";
 import { useEffect } from "react";
@@ -16,7 +16,7 @@ export default function MFAStepTwo({
     error: "",
     success: false,
   };
-  const [state, formAction] = useFormState(verifyMFAAction, initialState);
+  const [state, formAction] = useActionState(verifyMFAAction, initialState);
 
   // Subscribe to changes in the success field
   useEffect(() => {

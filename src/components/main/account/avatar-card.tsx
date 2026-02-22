@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { useRouter } from "next/navigation";
 import Avatar from "@/components/common/avatar";
 import { Button } from "@/components/ui/button";
@@ -31,9 +31,9 @@ export default function AvatarCard({ avatarUrl, userName }: AvatarCardProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [uploadState, uploadFormAction] = useFormState(
+  const [uploadState, uploadFormAction] = useActionState(
     uploadAvatarAction,
-    initialState
+    initialState,
   );
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {

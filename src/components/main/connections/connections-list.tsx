@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Submit from "@/components/forms/submit";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import {
   deleteInstitutionConnectionData,
   updateInstitutionConnectionData,
@@ -56,13 +56,13 @@ export default function ConnectionsList({
     error: "",
     success: false,
   };
-  const [updateState, formAction] = useFormState(
+  const [updateState, formAction] = useActionState(
     updateInstitutionConnectionData,
-    updateInitialState
+    updateInitialState,
   );
-  const [deleteState, deleteFormAction] = useFormState(
+  const [deleteState, deleteFormAction] = useActionState(
     deleteInstitutionConnectionData,
-    deleteInitialState
+    deleteInitialState,
   );
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -115,8 +115,8 @@ export default function ConnectionsList({
         const cardClassName = status.error
           ? "border-amber-500 transition-opacity duration-500"
           : status.checking
-          ? "opacity-25 pointer-events-none transition-opacity duration-500"
-          : "transition-opacity duration-500";
+            ? "opacity-25 pointer-events-none transition-opacity duration-500"
+            : "transition-opacity duration-500";
 
         return (
           <Card key={connection.$id} className={cardClassName}>
@@ -145,7 +145,7 @@ export default function ConnectionsList({
                   <p>
                     {connection.billing_cycle &&
                       `${connection.billing_cycle}${getOrdinalSuffix(
-                        connection.billing_cycle
+                        connection.billing_cycle,
                       )}`}
                   </p>
                   <p className="text-muted-foreground">Billing Cycle</p>

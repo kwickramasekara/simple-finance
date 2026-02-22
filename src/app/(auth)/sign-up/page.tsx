@@ -4,7 +4,8 @@ import Link from "next/link";
 import { signUpAction } from "@/lib/api/account";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
+import { useActionState } from "react";
 import Alert from "@/components/common/alert";
 import Submit from "@/components/forms/submit";
 
@@ -12,7 +13,7 @@ export default function SignUp() {
   const initialState = {
     error: "",
   };
-  const [state, formAction] = useFormState(signUpAction, initialState);
+  const [state, formAction] = useActionState(signUpAction, initialState);
 
   return (
     <div className="mx-auto px-2 grid gap-10 min-w-[360px]">

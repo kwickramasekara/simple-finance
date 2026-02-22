@@ -17,15 +17,15 @@ export async function signUpAction(prevState: any, formData: FormData) {
       ID.unique(),
       email as string,
       password as string,
-      name as string
+      name as string,
     );
 
     const session = await account.createEmailPasswordSession(
       email as string,
-      password as string
+      password as string,
     );
 
-    cookies().set("sf-user-session", session.secret, {
+    (await cookies()).set("sf-user-session", session.secret, {
       path: "/",
       httpOnly: true,
       sameSite: "strict",
@@ -48,10 +48,10 @@ export async function signInAction(prevState: any, formData: FormData) {
     const { account } = await createAdminClient();
     const session = await account.createEmailPasswordSession(
       email as string,
-      password as string
+      password as string,
     );
 
-    cookies().set("sf-user-session", session.secret, {
+    (await cookies()).set("sf-user-session", session.secret, {
       path: "/",
       httpOnly: true,
       sameSite: "strict",
@@ -74,7 +74,7 @@ export async function signOut() {
   try {
     const { account } = await createSessionClient();
 
-    cookies().delete("sf-user-session");
+    (await cookies()).delete("sf-user-session");
 
     const response = await account.deleteSession("current");
 
@@ -89,7 +89,7 @@ export async function createMFA(): Promise<APIResponse> {
     const { account, avatar } = await createSessionClient();
 
     const { secret, uri } = await account.createMfaAuthenticator(
-      AuthenticatorType.Totp
+      AuthenticatorType.Totp,
     );
 
     const qrResult = await avatar.getQR(uri);
@@ -108,7 +108,7 @@ export async function createMFA(): Promise<APIResponse> {
 
 export async function verifyMFAAction(
   prevState: any,
-  formData: FormData
+  formData: FormData,
 ): Promise<APIResponse> {
   try {
     const otp = formData.get("otp");
@@ -156,7 +156,7 @@ export async function enableMFA(): Promise<APIResponse> {
 
 export async function disableMFAAction(
   prevState: any,
-  formData: FormData
+  formData: FormData,
 ): Promise<APIResponse> {
   try {
     const otp = formData.get("otp");
@@ -181,13 +181,13 @@ export async function disableMFAAction(
 }
 
 export async function createMFAChallenge(
-  recovery: boolean = false
+  recovery: boolean = false,
 ): Promise<APIResponse> {
   try {
     const { account } = await createSessionClient();
 
     const challenge = await account.createMfaChallenge(
-      recovery ? AuthenticationFactor.Recoverycode : AuthenticationFactor.Totp
+      recovery ? AuthenticationFactor.Recoverycode : AuthenticationFactor.Totp,
     );
 
     return {
@@ -200,7 +200,7 @@ export async function createMFAChallenge(
 
 export async function verifyMFAChallengeAction(
   prevState: any,
-  formData: FormData
+  formData: FormData,
 ): Promise<APIResponse> {
   try {
     const challengeId = formData.get("challengeId");
@@ -251,7 +251,7 @@ export async function getAccountAction(): Promise<APIResponse> {
 
 export async function uploadAvatarAction(
   prevState: any,
-  formData: FormData
+  formData: FormData,
 ): Promise<APIResponse> {
   try {
     const { account, storage } = await createSessionClient();
@@ -278,7 +278,7 @@ export async function uploadAvatarAction(
       try {
         await storage.deleteFile(
           process.env.APPWRITE_AVATAR_BUCKET_ID!,
-          oldAvatarId
+          oldAvatarId,
         );
       } catch (error) {
         console.error("Failed to delete old avatar:", error);
@@ -290,7 +290,7 @@ export async function uploadAvatarAction(
     const uploadedFile = await storage.createFile(
       process.env.APPWRITE_AVATAR_BUCKET_ID!,
       newFileId,
-      file
+      file,
     );
 
     // Store the view URL (Next.js Image will handle optimization)

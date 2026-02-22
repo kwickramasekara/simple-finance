@@ -6,7 +6,7 @@ import {
   verifyMFAChallengeAction,
 } from "@/lib/api/account";
 import { useEffect, useState } from "react";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import OTP from "@/components/forms/otp";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/main/loading";
@@ -17,9 +17,9 @@ export default function MFAFlow({ recovery = false }: { recovery?: boolean }) {
     error: "",
     success: false,
   };
-  const [state, formAction] = useFormState(
+  const [state, formAction] = useActionState(
     verifyMFAChallengeAction,
-    initialState
+    initialState,
   );
   const [challengeError, setChallengeError] = useState<string | null>(null);
   const [challengeId, setChallengeId] = useState(undefined);

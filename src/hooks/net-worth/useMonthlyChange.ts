@@ -16,14 +16,14 @@ export function useMonthlyChange(data: NetWorthAssetsCollection[]) {
     monthlyTotals.forEach((item, index) => {
       if (index === 0) return;
       const difference = currency(item.total).subtract(
-        monthlyTotals[index - 1].total
+        monthlyTotals[index - 1].total,
       ).value;
       chartData.push({ month: item.month, difference: Math.round(difference) });
     });
 
     return {
       chartData,
-      notEnoughData: chartData.length < 2,
+      notEnoughData: chartData.length < 1,
     };
   }, [data]);
 }

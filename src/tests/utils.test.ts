@@ -57,12 +57,24 @@ describe("Utils", () => {
 
     it("should scale and round the number for millions", () => {
       const result = formatCurrency(1254567, true, true);
-      expect(result).toBe("$1.3M");
+      expect(result).toBe("$1.25M");
     });
 
     it("should scale and not round the number for millions", () => {
       const result = formatCurrency(1254567, false, true);
       expect(result).toBe("$1.25M");
+    });
+
+    it("should strip trailing zeros from millions", () => {
+      expect(formatCurrency(1000000, true, true)).toBe("$1M");
+    });
+
+    it("should strip only trailing zeros and keep nonzero decimals for millions", () => {
+      expect(formatCurrency(1100000, true, true)).toBe("$1.1M");
+    });
+
+    it("should keep two nonzero decimals for millions", () => {
+      expect(formatCurrency(1120000, true, true)).toBe("$1.12M");
     });
   });
 

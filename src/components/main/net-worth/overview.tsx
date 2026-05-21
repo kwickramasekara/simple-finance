@@ -38,7 +38,10 @@ export default function Overview({
             </CardDescription>
           </div>
           <div className="flex flex-col">
-            <p className="font-mono font-bold text-xl text-right">
+            <p
+              className="font-mono font-bold text-xl text-right"
+              title={formatCurrency(currentMonth.total, false, false)}
+            >
               {formatCurrency(currentMonth.total, true, true)}
             </p>
             {netWorthDiff !== 0 && (
@@ -97,7 +100,7 @@ export default function Overview({
                     chartToolTipCurrency(
                       value as number,
                       name as string,
-                      chartConfig
+                      chartConfig,
                     )
                   }
                 />

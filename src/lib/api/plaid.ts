@@ -80,29 +80,6 @@ export const createLinkToken = async (userId: string) => {
   }
 };
 
-export const createUpdateLinkToken = async (
-  userId: string,
-  accessToken: string
-) => {
-  try {
-    const tokenParams = {
-      user: {
-        client_user_id: userId,
-      },
-      client_name: APP_NAME,
-      language: APP_LANG,
-      country_codes: [APP_REGION] as CountryCode[],
-      access_token: accessToken,
-    };
-
-    const response = await plaidClient.linkTokenCreate(tokenParams);
-
-    return parseStringify({ linkToken: response.data.link_token });
-  } catch (error) {
-    console.error("Error (createUpdateLinkToken):", error);
-  }
-};
-
 export const processConnection = async ({
   publicToken,
 }: {

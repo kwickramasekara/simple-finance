@@ -27,7 +27,6 @@ import {
 import Alert from "@/components/common/alert";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { checkConnectionStatus } from "@/lib/api/plaid";
-import PlaidRelink from "./plaid-relink";
 import {
   Item,
   ItemContent,
@@ -43,10 +42,8 @@ type ConnectionStatus = {
 
 export default function ConnectionsList({
   data,
-  userId,
 }: {
   data: Models.Document[] | null;
-  userId: string;
 }) {
   const updateInitialState = {
     error: "",
@@ -70,9 +67,6 @@ export default function ConnectionsList({
   const [connectionStatuses, setConnectionStatuses] = useState<
     Record<string, ConnectionStatus>
   >({});
-  const [reconnectingConnection, setReconnectingConnection] = useState<
-    string | null
-  >(null);
 
   // Check each connection status individually on mount
   useEffect(() => {
@@ -153,14 +147,6 @@ export default function ConnectionsList({
 
                 <div className="flex w-1/4 gap-4 justify-end">
                   <ButtonGroup>
-                    <PlaidRelink
-                      connection={connection}
-                      userId={userId}
-                      connectionStatus={status}
-                      reconnectingConnection={reconnectingConnection}
-                      setReconnectingConnection={setReconnectingConnection}
-                    />
-
                     <Button
                       variant="outline"
                       size="icon"
@@ -198,8 +184,8 @@ export default function ConnectionsList({
                     </ItemTitle>
                     <ItemDescription>
                       {status.error === "ITEM_LOGIN_REQUIRED"
-                        ? "Your login credentials have changed or expired. Please reconnect this account."
-                        : "There was an error connecting to this account. Please try reconnecting."}
+                        ? "Your login credentials have changed or expired. Please delete this connection and add it again."
+                        : "There was an error connecting to this account. Please delete this connection and add it again."}
                     </ItemDescription>
                   </ItemContent>
                 </Item>

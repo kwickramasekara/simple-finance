@@ -23,9 +23,7 @@ export default async function Connections() {
         />
       )}
 
-      {connections && user && (
-        <ConnectionsList data={connections} userId={user.$id} />
-      )}
+      {connections && <ConnectionsList data={connections} />}
     </main>
   );
 }

@@ -9,6 +9,7 @@ import {
   validAssetVal,
 } from "@/lib/utils";
 import { createSessionClient } from "@/lib/appwrite";
+import { plaidClient } from "@/lib/plaid";
 import { revalidatePath } from "next/cache";
 import currency from "currency.js";
 
@@ -226,12 +227,53 @@ export async function deleteInstitutionConnectionData(
   try {
     const { database } = await createSessionClient();
 
-    if (!data.get("id")) throw new Error("ID is required");
+    const id = data.get("id") as string;
+
+    if (!id) throw new Error("ID is required");
+
+    const connection = await database.getDocument(
+      process.env.APPWRITE_DATABASE_ID!,
+      process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!,
+      id
+    );
+
+    const accessToken = connection.access_token as string | undefined;
+
+    if (accessToken) {
+      // Multiple accounts can share the same Plaid item (access token).
+      // Only remove the item from Plaid when its last connection is deleted.
+      const siblings = await database.listDocuments(
+        process.env.APPWRITE_DATABASE_ID!,
+        process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!,
+        [Query.equal("access_token", accessToken), Query.limit(1)]
+      );
+
+      // The doc being deleted is still in the results, so a total of 1
+      // means this is the last connection using the item.
+      if (siblings.total === 1) {
+        try {
+          await plaidClient.itemRemove({ access_token: accessToken });
+        } catch (error: any) {
+          const errorCode = error?.response?.data?.error_code;
+
+          // Item is already invalid/removed on Plaid's side — safe to proceed
+          if (
+            errorCode !== "INVALID_ACCESS_TOKEN" &&
+            errorCode !== "ITEM_NOT_FOUND"
+          ) {
+            throw new Error(
+              error?.response?.data?.error_message ||
+                "Failed to remove the connection from Plaid. Please try again."
+            );
+          }
+        }
+      }
+    }
 
     await database.deleteDocument(
       process.env.APPWRITE_DATABASE_ID!,
       process.env.APPWRITE_INSTITUTION_CONNECTIONS_COLLECTION_ID!,
-      data.get("id") as string
+      id
     );
 
     revalidatePath("/connections");
